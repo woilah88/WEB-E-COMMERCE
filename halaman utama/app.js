@@ -1,6 +1,16 @@
+// ==========================================
+// LOGIKA UTAMA: SEARCH, FILTER, & KERANJANG (app.js)
+// ==========================================
+
+// 1. Data Keranjang dari LocalStorage
 let cart = JSON.parse(localStorage.getItem("CART_XEMASHOP")) || [];
 
+// Element DOM Produk & Filter
 const productContainer = document.getElementById("product-container");
+const searchInput = document.getElementById("search-input");
+const filterButtons = document.querySelectorAll(".filter-btn");
+
+// Element DOM Cart Drawer / Sidepanel
 const cartBtn = document.getElementById("cart-btn");
 const closeCartBtn = document.getElementById("close-cart-btn");
 const cartDrawer = document.getElementById("cart-drawer");
@@ -8,9 +18,12 @@ const cartOverlay = document.getElementById("cart-overlay");
 const cartItemsContainer = document.getElementById("cart-items-container");
 const cartCount = document.getElementById("cart-count");
 const cartTotalPrice = document.getElementById("cart-total-price");
-const searchInput = document.getElementById("search-input");
 const checkoutBtn = document.getElementById("checkout-btn");
 
+let currentCategory = "all";
+let currentSearchQuery = "";
+
+// Helper Format Rupiah
 function formatRupiah(number) {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -19,18 +32,29 @@ function formatRupiah(number) {
   }).format(number);
 }
 
-function renderProducts(productList) {
+// ==========================================
+// A. RENDER PRODUK & FILTER
+// ==========================================
+
+function renderProducts() {
+  if (!productContainer) return;
   productContainer.innerHTML = "";
 
-  if (productList.length === 0) {
-    productContainer.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #64748b;">Produk tidak ditemukan.</p>`;
+  const filteredProducts = products.filter((product) => {
+    const matchCategory = currentCategory === "all" || product.category.toUpperCase() === currentCategory.toUpperCase();
+    const matchSearch = product.name.toLowerCase().includes(currentSearchQuery.toLowerCase()) || 
+                        product.description.toLowerCase().includes(currentSearchQuery.toLowerCase());
+    return matchCategory && matchSearch;
+  });
+
+  if (filteredProducts.length === 0) {
+    productContainer.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); margin: 2rem 0;">Produk tidak ditemukan.</p>`;
     return;
   }
 
-  productList.forEach((product) => {
+  filteredProducts.forEach((product) => {
     const productCard = document.createElement("div");
-    productCard.classList.add("product-cart"); 
-
+    productCard.classList.add("product-cart");
     productCard.innerHTML = `
       <img src="${product.image}" alt="${product.name}" class="product-image">
       <div class="product-info">
@@ -43,123 +67,156 @@ function renderProducts(productList) {
         </div>
       </div>
     `;
-
     productContainer.appendChild(productCard);
   });
 }
 
+// Event Search & Filter
+if (searchInput) {
+  searchInput.addEventListener("input", (e) => {
+    currentSearchQuery = e.target.value.trim();
+    renderProducts();
+  });
+}
+
+filterButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    filterButtons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    currentCategory = btn.getAttribute("data-category");
+    renderProducts();
+  });
+});
+
+
+// ==========================================
+// B. MANAJEMEN KERANJANG BELANJA
+// ==========================================
+
+// 1. Tambah Produk ke Keranjang
 function addToCart(productId) {
-  const product = products.find((item) => item.id === productId);
+  const product = products.find((p) => p.id === productId);
+  if (!product) return;
+
   const existingItem = cart.find((item) => item.id === productId);
 
   if (existingItem) {
     existingItem.quantity += 1;
   } else {
-    cart.push({ ...product, quantity: 1 });
+    cart.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: 1
+    });
   }
 
-  updateCart();
-  toggleCart(true); 
+  saveCart();
+  renderCart();
+  openCartDrawer();
 }
 
-function changeQuantity(productId, action) {
-  const item = cart.find((item) => item.id === productId);
-
-  if (!item) return;
-
-  if (action === "increase") {
-    item.quantity += 1;
-  } else if (action === "decrease") {
-    item.quantity -= 1;
-    if (item.quantity <= 0) {
-      removeFromCart(productId);
-      return;
-    }
-  }
-
-  updateCart();
-}
-
-function removeFromCart(productId) {
-  cart = cart.filter((item) => item.id !== productId);
-  updateCart();
-}
-
-function updateCart() {
+// 2. Simpan Keranjang ke LocalStorage
+function saveCart() {
   localStorage.setItem("CART_XEMASHOP", JSON.stringify(cart));
-  renderCartItems();
-
-  const totalCount = cart.reduce((total, item) => total + item.quantity, 0);
-  cartCount.textContent = totalCount;
-
-  const totalAmount = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-  cartTotalPrice.textContent = formatRupiah(totalAmount);
 }
 
-function renderCartItems() {
+// 3. Render Isi Keranjang
+function renderCart() {
+  if (!cartItemsContainer) return;
   cartItemsContainer.innerHTML = "";
+
+  let totalItemCount = 0;
+  let totalPrice = 0;
 
   if (cart.length === 0) {
     cartItemsContainer.innerHTML = `<p class="empty-cart-msg">Keranjang kamu masih kosong.</p>`;
-    return;
+  } else {
+    cart.forEach((item) => {
+      totalItemCount += item.quantity;
+      totalPrice += item.price * item.quantity;
+
+      const itemDiv = document.createElement("div");
+      itemDiv.classList.add("cart-item");
+      itemDiv.innerHTML = `
+        <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+        <div class="cart-item-info">
+          <div class="cart-item-title">${item.name}</div>
+          <div class="cart-item-price">${formatRupiah(item.price)}</div>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+            <span>${item.quantity}</span>
+            <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+          </div>
+        </div>
+        <button class="remove-item-btn" onclick="removeFromCart(${item.id})">Hapus</button>
+      `;
+      cartItemsContainer.appendChild(itemDiv);
+    });
   }
 
-  cart.forEach((item) => {
-    const cartItem = document.createElement("div");
-    cartItem.classList.add("cart-item");
-
-    cartItem.innerHTML = `
-      <img src="${item.image}" alt="${item.name}" class="cart-item-img">
-      <div class="cart-item-info">
-        <div class="cart-item-title">${item.name}</div>
-        <div class="cart-item-price">${formatRupiah(item.price)}</div>
-        <div class="cart-item-qty">
-          <button class="qty-btn" onclick="changeQuantity(${item.id}, 'decrease')">-</button>
-          <span>${item.quantity}</span>
-          <button class="qty-btn" onclick="changeQuantity(${item.id}, 'increase')">+</button>
-        </div>
-      </div>
-      <button class="remove-item-btn" onclick="removeFromCart(${item.id})">Hapus</button>
-    `;
-
-    cartItemsContainer.appendChild(cartItem);
-  });
+  if (cartCount) cartCount.textContent = totalItemCount;
+  if (cartTotalPrice) cartTotalPrice.textContent = formatRupiah(totalPrice);
 }
 
-searchInput.addEventListener("input", (e) => {
-  const searchTerm = e.target.value.toLowerCase().trim();
-  const filteredProducts = products.filter((product) => {
-    return (
-      product.name.toLowerCase().includes(searchTerm) ||
-      product.category.toLowerCase().includes(searchTerm)
-    );
-  });
-  renderProducts(filteredProducts);
-});
+// 4. Ubah Jumlah Quantity (+ / -)
+function updateQuantity(productId, change) {
+  const item = cart.find((i) => i.id === productId);
+  if (!item) return;
 
-function toggleCart(isOpen) {
-  if (isOpen) {
+  item.quantity += change;
+
+  if (item.quantity <= 0) {
+    removeFromCart(productId);
+  } else {
+    saveCart();
+    renderCart();
+  }
+}
+
+// 5. Hapus Produk dari Keranjang
+function removeFromCart(productId) {
+  cart = cart.filter((item) => item.id !== productId);
+  saveCart();
+  renderCart();
+}
+
+// ==========================================
+// C. BUKA / TUTUP DRAWER KERANJANG & CHECKOUT
+// ==========================================
+
+function openCartDrawer() {
+  if (cartDrawer && cartOverlay) {
     cartDrawer.classList.add("active");
     cartOverlay.classList.add("active");
-  } else {
+  }
+}
+
+function closeCartDrawer() {
+  if (cartDrawer && cartOverlay) {
     cartDrawer.classList.remove("active");
     cartOverlay.classList.remove("active");
   }
 }
 
-cartBtn.addEventListener("click", () => toggleCart(true));
-closeCartBtn.addEventListener("click", () => toggleCart(false));
-cartOverlay.addEventListener("click", () => toggleCart(false));
+// Event Listeners Buka/Tutup Keranjang
+if (cartBtn) cartBtn.addEventListener("click", openCartDrawer);
+if (closeCartBtn) closeCartBtn.addEventListener("click", closeCartDrawer);
+if (cartOverlay) cartOverlay.addEventListener("click", closeCartDrawer);
 
-checkoutBtn.addEventListener("click", () => {
-  if (cart.length === 0) {
-    alert("Keranjang kamu masih kosong, pilih produk dulu ya!");
-    return;
-  }
+// Tombol Checkout Sekarang
+if (checkoutBtn) {
+  checkoutBtn.addEventListener("click", () => {
+    if (cart.length === 0) {
+      alert("Keranjang belanja kamu masih kosong!");
+      return;
+    }
+    window.location.href = "../checkout/checkout.html";
+  });
+}
 
-  // Pindah keluar dari folder "halaman utama" menuju folder "checkout/checkout.html"
-  window.location.href = "../checkout/checkout.html";
-});
-
-renderProducts(products);
-updateCart();
+// Inisialisasi awal saat halaman dimuat
+renderProducts();
+renderCart();

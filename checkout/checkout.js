@@ -193,7 +193,7 @@ checkoutForm.addEventListener("submit", (e) => {
   `;
 
   // Draf Pesan WhatsApp Otomatis
-  const adminWaNumber = "6281299998888"; 
+  const adminWaNumber = "6282229008917"; 
   
   let itemDetailsText = "";
   cart.forEach(item => {

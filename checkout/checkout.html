@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - XemaShop</title>
+  
+  <!-- CSS Utama & CSS Checkout -->
+  <link rel="stylesheet" href="../halaman utama/halaman utama.css">
+  <link rel="stylesheet" href="checkout.css">
+</head>
+<body>
+
+  <!-- HEADER / NAVBAR -->
+  <header class="navbar">
+    <div class="logo">
+      <h2>XemaShop</h2>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA CHECKOUT -->
+  <main class="container" style="max-width: 900px; margin: 1.5rem auto;">
+    
+    <!-- TOMBOL KEMBALI DI PINGGIR KIRI -->
+    <div style="text-align: left;">
+      <a href="../halaman utama/halaman utama.html" class="back-btn">← Kembali ke Beranda</a>
+    </div>
+
+    <!-- JUDUL DI TENGAH -->
+    <h1 style="text-align: center; margin: 0.5rem 0 1.5rem 0; color: #1e293b; font-size: 1.75rem;">Tujuan pengiriman</h1>
+
+    <!-- CONTAINER DUA KOLOM -->
+    <div class="checkout-container">
+      
+      <!-- KOLOM KIRI: FORM PENGIRIMAN -->
+      <div class="checkout-box">
+        <h2>Data Pembeli</h2>
+        <form id="checkout-form">
+          <div class="form-group">
+            <label for="nama">Nama Lengkap</label>
+            <input type="text" id="nama" placeholder="Masukkan nama lengkap" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Nomor WhatsApp</label>
+            <input type="tel" id="phone" placeholder="Contoh: 08123456789" required>
+          </div>
+
+          <div class="form-group">
+            <label for="alamat">Alamat Pengiriman</label>
+            <textarea id="alamat" rows="3" placeholder="Jl. Raya No. 123, Kota, Provinsi" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="payment">Metode Pembayaran</label>
+            <select id="payment" required>
+              <option value="Transfer Bank (BCA)">Transfer Bank (BCA)</option>
+              <option value="E-Wallet (Gopay/OVO/Dana)">E-Wallet (Gopay/OVO/Dana)</option>
+              <option value="COD (Bayar di Tempat)">COD (Bayar di Tempat)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="checkout-btn" style="margin-top: 0.8rem;">Konfirmasi & Bayar Sekarang</button>
+        </form>
+      </div>
+
+      <!-- KOLOM KANAN: RINGKASAN PESANAN -->
+      <div class="checkout-box">
+        <h2>Ringkasan Pesanan</h2>
+        
+        <!-- List Barang Disuntikkan via JS -->
+        <div id="checkout-items-list"></div>
+
+        <!-- Total Pembayaran -->
+        <div class="summary-total" style="margin-top: 1.2rem; border-top: 2px solid #e2e8f0; padding-top: 0.8rem; display: flex; justify-content: space-between; align-items: center;">
+          <span>Total Pembayaran:</span>
+          <strong id="checkout-total-price" style="color: #2563eb; font-size: 1.15rem;">Rp 0</strong>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- POP-UP MODAL NOTA (RECEIPT) -->
+  <div class="modal-overlay" id="receipt-modal">
+    <div class="receipt-card">
+      <h2>Transaksi Berhasil!</h2>
+      <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 1rem;">Terima kasih telah berbelanja di <strong>XemaShop</strong>.</p>
+      
+      <div id="receipt-details" style="text-align: left; background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.85rem;">
+        <!-- Detail Nota Disuntikkan via JS -->
+      </div>
+      
+      <button class="checkout-btn" onclick="finishOrder()">Kembali ke Halaman Utama</button>
+    </div>
+  </div>
+
+  <script src="checkout.js"></script>
+</body>
+</html>
+

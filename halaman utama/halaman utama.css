@@ -25,7 +25,9 @@ body {
   line-height: 1.6;
 }
 
-/* NAVBAR */
+/* ==========================================
+   1. NAVBAR RESPONSIF (SATU BARIS DI HP)
+   ========================================== */
 .navbar {
   position: sticky;
   top: 0;
@@ -34,23 +36,30 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 5%;
+  padding: 0.8rem 1rem;
   z-index: 100;
+  gap: 0.5rem;
 }
 
 .logo h2 {
   color: var(--primary-color);
   font-weight: 700;
-  letter-spacing: -0.5px;
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+.search-box {
+  flex: 1;
+  max-width: 240px;
 }
 
 .search-box input {
-  width: 280px;
-  padding: 0.5rem 1rem;
+  width: 100%;
+  padding: 0.45rem 0.8rem;
   border: 1px solid var(--border-color);
   border-radius: 20px;
   outline: none;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: all 0.2s ease;
 }
 
@@ -61,17 +70,18 @@ body {
 
 .cart-icon {
   position: relative;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.4rem;
   background: var(--bg-color);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   transition: background 0.2s ease;
+  flex-shrink: 0;
 }
 
 .cart-icon:hover {
@@ -84,29 +94,31 @@ body {
   right: -2px;
   background-color: var(--accent-red);
   color: white;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: bold;
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: 50%;
 }
 
-/* CONTAINER & KATALOG PRODUK */
+/* ==========================================
+   2. CONTAINER & KATALOG PRODUK
+   ========================================== */
 .container {
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
 }
 
 .page-title {
-  margin-bottom: 1.5rem;
-  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
   color: var(--text-dark);
 }
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.2rem;
 }
 
 .product-cart {
@@ -124,55 +136,86 @@ body {
   box-shadow: var(--shadow-hover);
 }
 
-.product-image {
+/* FOTO PRODUK DIATUR PROPORSIONAL */
+.product-image-wrapper {
+  position: relative;
   width: 100%;
   height: 200px;
+  background-color: #f1f5f9;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .product-info {
-  padding: 1.2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
 .product-category {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
 }
 
 .product-title {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .product-description {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   margin-bottom: 1rem;
   flex-grow: 1;
 }
 
+/* BARIS HARGA & TOMBOL RAPI */
 .product-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
+  gap: 0.5rem;
+}
+
+.product-price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.original-price {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-decoration: line-through; 
+}
+
+.discount-price {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary-color);
 }
 
 .add-to-cart-btn {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.8rem;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.8rem;
+  white-space: nowrap;
   transition: background-color 0.2s ease;
 }
 
@@ -180,7 +223,9 @@ body {
   background-color: var(--primary-hover);
 }
 
-/* KERANJANG DRAWER */
+/* ==========================================
+   3. KERANJANG DRAWER
+   ========================================== */
 .cart-overlay {
   position: fixed;
   top: 0;
@@ -333,14 +378,16 @@ body {
   background-color: #059669;
 }
 
-/* FILTER KATEGORI */
+/* ==========================================
+   4. FILTER KATEGORI & CAROUSEL
+   ========================================== */
 .filter-btn {
-  padding: 0.4rem 1rem;
+  padding: 0.4rem 0.9rem;
   background-color: var(--card-bg);
   color: var(--text-muted);
   border: 1px solid var(--border-color);
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -358,31 +405,30 @@ body {
   border-color: var(--primary-color);
 }
 
-/* CAROUSEL BANNER PROMO */
 .carousel-container {
   max-width: 1200px;
-  margin: 1.5rem auto 0 auto;
-  padding: 0 1.5rem;
+  margin: 1rem auto 0 auto;
+  padding: 0 1rem;
   position: relative;
 }
 
 .carousel-slide {
   display: none;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--shadow);
 }
 
 .banner-content {
-  padding: 2.5rem 2rem;
+  padding: 2rem 1.5rem;
   color: white;
   text-align: center;
-  border-radius: 16px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 160px;
+  min-height: 140px;
 }
 
 .banner-1 {
@@ -396,13 +442,13 @@ body {
 }
 
 .banner-content h2 {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .banner-content p {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   opacity: 0.9;
 }
 
@@ -413,26 +459,21 @@ body {
   background: rgba(255, 255, 255, 0.8);
   color: var(--text-dark);
   border: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
-  padding: 0.5rem 0.8rem;
+  padding: 0.4rem 0.7rem;
   cursor: pointer;
   border-radius: 50%;
   transition: all 0.2s ease;
   z-index: 10;
 }
 
-.prev-slide { left: 2.2rem; }
-.next-slide { right: 2.2rem; }
-
-.prev-slide:hover, .next-slide:hover {
-  background: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
+.prev-slide { left: 1.5rem; }
+.next-slide { right: 1.5rem; }
 
 .carousel-dots {
   text-align: center;
-  margin-top: 0.6rem;
+  margin-top: 0.5rem;
 }
 
 .dot {
@@ -461,7 +502,9 @@ body {
   to { opacity: 1; }
 }
 
-/* TOAST NOTIFICATION */
+/* ==========================================
+   5. TOAST NOTIFICATION & BADGE
+   ========================================== */
 #toast-container {
   position: fixed;
   bottom: 20px;
@@ -477,7 +520,7 @@ body {
   color: #ffffff;
   padding: 0.8rem 1.2rem;
   border-radius: 10px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -494,13 +537,6 @@ body {
   transform: translateY(0);
 }
 
-/* BADGE DISKON MERAH & HARGA CORET */
-.product-image-wrapper {
-  position: relative;
-  width: 100%;
-  height: 200px;
-}
-
 .discount-badge {
   position: absolute;
   top: 10px;
@@ -515,26 +551,9 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-.product-price-container {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-}
-
-.original-price {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  text-decoration: line-through; 
-}
-
-.discount-price {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
-/* MODAL DETAIL PRODUK (QUICK VIEW) - DISET PRESISI CENTER */
+/* ==========================================
+   6. MODAL DETAIL PRODUK (QUICK VIEW)
+   ========================================== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -579,8 +598,8 @@ body {
 
 .product-detail-card .close-btn {
   position: absolute;
-  top: 1rem;
-  right: 1.2rem;
+  top: 0.8rem;
+  right: 1rem;
   font-size: 1.8rem;
   color: var(--text-muted);
   cursor: pointer;
@@ -590,14 +609,14 @@ body {
 .product-detail-body {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 1.2rem;
   align-items: center;
 }
 
 .detail-img-wrapper {
   position: relative;
   width: 100%;
-  height: 260px;
+  height: 240px;
   border-radius: 12px;
   overflow: hidden;
 }
@@ -611,19 +630,19 @@ body {
 .detail-info {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .detail-title {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--text-dark);
 }
 
 .detail-desc {
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .size-selector {
@@ -640,12 +659,12 @@ body {
 
 .size-options {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.4rem;
   flex-wrap: wrap;
 }
 
 .size-btn {
-  padding: 0.3rem 0.7rem;
+  padding: 0.3rem 0.6rem;
   border: 1px solid var(--border-color);
   background: var(--bg-color);
   border-radius: 6px;
@@ -661,27 +680,31 @@ body {
   color: white;
 }
 
-/* RESPONSIVE MOBILE */
+/* ==========================================
+   7. KHUSUS MEDIA QUERIES LAYAR HP (< 600px)
+   ========================================== */
 @media (max-width: 600px) {
   .navbar {
-    flex-direction: column;
-    gap: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    gap: 0.5rem;
   }
-  
+
+  .logo h2 {
+    font-size: 1.1rem;
+  }
+
   .search-box input {
-    width: 100%;
-  }
-  
-  .cart-drawer {
-    width: 100%;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
   }
 
-  .banner-content h2 { 
-    font-size: 1.2rem; 
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  .banner-content p { 
-    font-size: 0.85rem; 
+  .product-image-wrapper {
+    height: 180px;
   }
 
   .product-detail-card {
@@ -696,5 +719,15 @@ body {
 
   .detail-img-wrapper {
     height: 180px;
+  }
+
+  #toast-container {
+    bottom: 15px;
+    right: 15px;
+    left: 15px;
+  }
+
+  .toast {
+    justify-content: center;
   }
 }

@@ -65,10 +65,19 @@ body {
 
 /* CONTAINER DUA KOTAK KIRI & KANAN */
 .checkout-container {
+  max-width: 1000px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 380px;
   gap: 1.5rem;
-  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .checkout-container {
+    grid-template-columns: 1fr; /* Tumpuk 1 kolom di HP */
+    padding: 0 0.8rem;
+  }
 }
 
 .form-section,

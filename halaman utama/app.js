@@ -1,5 +1,5 @@
 // ==========================================
-// LOGIKA UTAMA: KATALOG, WISHLIST, DARK MODE, & KERANJANG (app.js)
+// LOGIKA UTAMA: KATALOG, RATING, WISHLIST, RIWAYAT, DARK MODE, & KERANJANG (app.js)
 // ==========================================
 
 // 1. Data LocalStorage
@@ -26,6 +26,7 @@ const checkoutBtn = document.getElementById("checkout-btn");
 const detailModal = document.getElementById("product-detail-modal");
 const closeDetailBtn = document.getElementById("close-detail-btn");
 const detailBody = document.getElementById("product-detail-body");
+const productReviewsContainer = document.getElementById("product-reviews-container");
 
 // Element DOM Wishlist Modal
 const wishlistBtn = document.getElementById("wishlist-btn");
@@ -33,6 +34,12 @@ const wishlistCount = document.getElementById("wishlist-count");
 const wishlistModal = document.getElementById("wishlist-modal");
 const closeWishlistBtn = document.getElementById("close-wishlist-btn");
 const wishlistItemsContainer = document.getElementById("wishlist-items-container");
+
+// Element DOM Riwayat Pembelian
+const historyBtn = document.getElementById("history-btn");
+const historyModal = document.getElementById("history-modal");
+const closeHistoryBtn = document.getElementById("close-history-btn");
+const historyItemsContainer = document.getElementById("history-items-container");
 
 // Element DOM Dark Mode
 const darkModeToggle = document.getElementById("dark-mode-toggle");
@@ -76,18 +83,39 @@ function renderProducts() {
     return;
   }
 
+  // Hitung statistik rating secara DINAMIS dari ORDER_HISTORY_XEMA
+  const orderHistory = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
+  const ratingsMap = {};
+
+  orderHistory.forEach(order => {
+    order.items.forEach(item => {
+      const pId = Number(item.id);
+      if (item.userRating && item.userRating > 0) {
+        if (!ratingsMap[pId]) {
+          ratingsMap[pId] = { totalStars: 0, reviewsCount: 0 };
+        }
+        ratingsMap[pId].totalStars += Number(item.userRating);
+        ratingsMap[pId].reviewsCount += 1;
+      }
+    });
+  });
+
   filteredProducts.forEach((product) => {
     const productCard = document.createElement("div");
     productCard.classList.add("product-cart");
     
     const hasDiscount = product.discountPercent && product.originalPrice;
-    const isWishlisted = wishlist.includes(product.id);
+    const isWishlisted = wishlist.includes(Number(product.id));
     
+    const pId = Number(product.id);
+    const productStats = ratingsMap[pId] || { totalStars: 0, reviewsCount: 0 };
+    const count = productStats.reviewsCount;
+    const avgRating = count > 0 ? (productStats.totalStars / count).toFixed(1) : '0.0';
+
     productCard.innerHTML = `
       <div class="product-image-wrapper">
         ${hasDiscount ? `<span class="discount-badge">-${product.discountPercent}%</span>` : ''}
         
-        <!-- TOMBOL HATI FAVORIT DI TIAP FOTO PRODUK -->
         <button class="wishlist-heart-btn ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(event, ${product.id})" title="Tambah/Hapus Favorit">
           ${isWishlisted ? '❤️' : '🤍'}
         </button>
@@ -96,6 +124,12 @@ function renderProducts() {
       </div>
       <div class="product-info">
         <span class="product-category">${product.category}</span>
+        
+        <div class="product-rating">
+          <span class="rating-stars">⭐ ${avgRating}</span>
+          <span class="rating-count">(${count})</span>
+        </div>
+
         <h3 class="product-title" onclick="openProductDetail(${product.id})" style="cursor: pointer;">${product.name}</h3>
         <p class="product-description">${product.description}</p>
         <div class="product-bottom">
@@ -143,12 +177,13 @@ if (sortSelect) {
 function toggleWishlist(event, productId) {
   if (event) event.stopPropagation();
 
-  const index = wishlist.indexOf(productId);
+  const id = Number(productId);
+  const index = wishlist.indexOf(id);
 
   if (index > -1) {
     wishlist.splice(index, 1);
   } else {
-    wishlist.push(productId);
+    wishlist.push(id);
   }
 
   localStorage.setItem("WISHLIST_XEMASHOP", JSON.stringify(wishlist));
@@ -168,7 +203,7 @@ function updateWishlistUI() {
   }
 
   wishlist.forEach((id) => {
-    const product = products.find(p => p.id === id);
+    const product = products.find(p => Number(p.id) === Number(id));
     if (!product) return;
 
     const itemDiv = document.createElement("div");
@@ -200,7 +235,171 @@ if (closeWishlistBtn) {
 }
 
 // ==========================================
-// C. LOGIKA DARK MODE TOGGLE
+// C. LOGIKA RIWAYAT PEMBELIAN & FORM RATING FOTO/VIDEO/KOMENTAR
+// ==========================================
+
+function renderHistory() {
+  if (!historyItemsContainer) return;
+  
+  const orderHistory = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
+  historyItemsContainer.innerHTML = "";
+
+  if (orderHistory.length === 0) {
+    historyItemsContainer.innerHTML = `<p style="text-align: center; color: var(--text-muted); margin: 2rem 0;">Belum ada riwayat transaksi pembelian.</p>`;
+    return;
+  }
+
+  orderHistory.forEach((order, orderIndex) => {
+    const orderCard = document.createElement("div");
+    orderCard.classList.add("history-order-card");
+
+    let productsHTML = "";
+    order.items.forEach((item, itemIndex) => {
+      let starsHTML = "";
+      for (let i = 1; i <= 5; i++) {
+        const isActive = i <= (item.userRating || 0) ? "active" : "";
+        starsHTML += `<span class="${isActive}" onclick="setTempStar(${orderIndex}, ${itemIndex}, ${i})">⭐</span>`;
+      }
+
+      productsHTML += `
+        <div class="history-product-item">
+          <div class="history-product-main">
+            <img src="${item.image}" alt="${item.name}" class="history-product-img">
+            <div style="flex-grow: 1;">
+              <h4 style="font-size: 0.9rem; color: var(--text-dark);">${item.name} (${item.quantity}x)</h4>
+              <p style="font-size: 0.8rem; color: var(--primary-color); font-weight: bold;">${formatRupiah(item.price)}</p>
+              
+              <div style="margin-top: 0.2rem;">
+                <span style="font-size: 0.75rem; color: var(--text-muted);">
+                  ${item.userRating ? `Bintang Kamu: ${item.userRating}/5` : 'Pilih Bintang:'}
+                </span>
+                <div class="star-rating-input">
+                  ${starsHTML}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FORM ULASAN KOMPLIT SHOPEE (KOMENTAR, FOTO, VIDEO) -->
+          <div class="review-form-box">
+            <textarea id="comment-${orderIndex}-${itemIndex}" class="review-textarea" placeholder="Tulis ulasan produk disini... (contoh: Bahannya bagus banget, respon cepat!)">${item.userComment || ''}</textarea>
+            
+            <div class="review-media-upload">
+              <label class="upload-btn-label">
+                📷 Tambah Foto
+                <input type="file" id="photo-${orderIndex}-${itemIndex}" accept="image/*" style="display: none;" onchange="previewUploadName(this, 'photo-name-${orderIndex}-${itemIndex}')">
+              </label>
+              <span id="photo-name-${orderIndex}-${itemIndex}" style="font-size: 0.75rem; color: var(--text-muted);">${item.userPhoto ? '✅ Foto Terupload' : ''}</span>
+
+              <label class="upload-btn-label">
+                🎥 Tambah Video
+                <input type="file" id="video-${orderIndex}-${itemIndex}" accept="video/*" style="display: none;" onchange="previewUploadName(this, 'video-name-${orderIndex}-${itemIndex}')">
+              </label>
+              <span id="video-name-${orderIndex}-${itemIndex}" style="font-size: 0.75rem; color: var(--text-muted);">${item.userVideo ? '✅ Video Terupload' : ''}</span>
+            </div>
+
+            <button class="submit-review-btn" onclick="saveFullReview(${orderIndex}, ${itemIndex}, ${item.id})">
+              ${item.userRating ? '🔄 Perbarui Ulasan' : '🚀 Kirim Ulasan'}
+            </button>
+          </div>
+        </div>
+      `;
+    });
+
+    orderCard.innerHTML = `
+      <div class="history-order-header">
+        <span><strong>ID:</strong> ${order.orderId}</span>
+        <span>${order.date}</span>
+      </div>
+      <div>${productsHTML}</div>
+    `;
+
+    historyItemsContainer.appendChild(orderCard);
+  });
+}
+
+function setTempStar(orderIndex, itemIndex, starVal) {
+  let orderHistory = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
+  orderHistory[orderIndex].items[itemIndex].userRating = starVal;
+  localStorage.setItem("ORDER_HISTORY_XEMA", JSON.stringify(orderHistory));
+  renderHistory();
+}
+
+function previewUploadName(input, spanId) {
+  const span = document.getElementById(spanId);
+  if (input.files && input.files[0] && span) {
+    span.textContent = `✅ ${input.files[0].name.substring(0, 15)}...`;
+  }
+}
+
+function saveFullReview(orderIndex, itemIndex, productId) {
+  let orderHistory = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
+  const item = orderHistory[orderIndex].items[itemIndex];
+
+  if (!item.userRating || item.userRating === 0) {
+    alert("Silakan beri rating bintang terlebih dahulu ya!");
+    return;
+  }
+
+  const commentText = document.getElementById(`comment-${orderIndex}-${itemIndex}`).value.trim();
+  const photoInput = document.getElementById(`photo-${orderIndex}-${itemIndex}`);
+  const videoInput = document.getElementById(`video-${orderIndex}-${itemIndex}`);
+
+  item.userComment = commentText;
+
+  const processFiles = () => {
+    localStorage.setItem("ORDER_HISTORY_XEMA", JSON.stringify(orderHistory));
+    alert("Ulasan kamu berhasil disimpan!");
+    renderHistory();
+    renderProducts();
+  };
+
+  let filePromises = [];
+
+  if (photoInput && photoInput.files[0]) {
+    filePromises.push(new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        item.userPhoto = e.target.result;
+        resolve();
+      };
+      reader.readAsDataURL(photoInput.files[0]);
+    }));
+  }
+
+  if (videoInput && videoInput.files[0]) {
+    filePromises.push(new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        item.userVideo = e.target.result;
+        resolve();
+      };
+      reader.readAsDataURL(videoInput.files[0]);
+    }));
+  }
+
+  if (filePromises.length > 0) {
+    Promise.all(filePromises).then(processFiles);
+  } else {
+    processFiles();
+  }
+}
+
+if (historyBtn) {
+  historyBtn.addEventListener("click", () => {
+    renderHistory();
+    if (historyModal) historyModal.classList.add("active");
+  });
+}
+
+if (closeHistoryBtn) {
+  closeHistoryBtn.addEventListener("click", () => {
+    if (historyModal) historyModal.classList.remove("active");
+  });
+}
+
+// ==========================================
+// D. LOGIKA DARK MODE TOGGLE
 // ==========================================
 
 function initDarkMode() {
@@ -226,20 +425,21 @@ if (darkModeToggle) {
 }
 
 // ==========================================
-// D. MANAJEMEN KERANJANG BELANJA
+// E. MANAJEMEN KERANJANG BELANJA
 // ==========================================
 
 function addToCart(productId) {
-  const product = products.find((p) => p.id === productId);
+  const id = Number(productId);
+  const product = products.find((p) => Number(p.id) === id);
   if (!product) return;
 
-  const existingItem = cart.find((item) => item.id === productId);
+  const existingItem = cart.find((item) => Number(item.id) === id);
 
   if (existingItem) {
     existingItem.quantity += 1;
   } else {
     cart.push({
-      id: product.id,
+      id: Number(product.id),
       name: product.name,
       price: product.price,
       image: product.image,
@@ -294,13 +494,14 @@ function renderCart() {
 }
 
 function updateQuantity(productId, change) {
-  const item = cart.find((i) => i.id === productId);
+  const id = Number(productId);
+  const item = cart.find((i) => Number(i.id) === id);
   if (!item) return;
 
   item.quantity += change;
 
   if (item.quantity <= 0) {
-    removeFromCart(productId);
+    removeFromCart(id);
   } else {
     saveCart();
     renderCart();
@@ -308,7 +509,8 @@ function updateQuantity(productId, change) {
 }
 
 function removeFromCart(productId) {
-  cart = cart.filter((item) => item.id !== productId);
+  const id = Number(productId);
+  cart = cart.filter((item) => Number(item.id) !== id);
   saveCart();
   renderCart();
 }
@@ -342,7 +544,7 @@ if (checkoutBtn) {
 }
 
 // ==========================================
-// E. BANNER CAROUSEL
+// F. BANNER CAROUSEL
 // ==========================================
 let slideIndex = 0;
 let slideTimer;
@@ -381,17 +583,11 @@ function currentSlide(index) {
 }
 
 // ==========================================
-// F. TOAST NOTIFICATION (DISABLED)
-// ==========================================
-function showToast(message) {
-  return;
-}
-
-// ==========================================
-// G. MODAL DETAIL PRODUK + UKURAN
+// G. MODAL DETAIL PRODUK + SECTION ULASAN PEMBELI (SHOPEE STYLE)
 // ==========================================
 function openProductDetail(productId) {
-  const product = products.find((p) => p.id === productId);
+  const id = Number(productId);
+  const product = products.find((p) => Number(p.id) === id);
   if (!product || !detailModal || !detailBody) return;
 
   const hasDiscount = product.discountPercent && product.originalPrice;
@@ -414,6 +610,31 @@ function openProductDetail(productId) {
     .map((size, index) => `<button type="button" class="size-btn ${index === 0 ? 'active' : ''}">${size}</button>`)
     .join("");
 
+  // Hitung ulang dinamis ulasan
+  const orderHistory = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
+  let totalStars = 0;
+  let count = 0;
+  let reviewsList = [];
+
+  orderHistory.forEach(order => {
+    order.items.forEach(item => {
+      if (Number(item.id) === id && item.userRating && item.userRating > 0) {
+        totalStars += Number(item.userRating);
+        count += 1;
+
+        reviewsList.push({
+          date: order.date,
+          rating: item.userRating,
+          comment: item.userComment || "Tidak ada ulasan tertulis.",
+          photo: item.userPhoto || null,
+          video: item.userVideo || null
+        });
+      }
+    });
+  });
+
+  const avgRating = count > 0 ? (totalStars / count).toFixed(1) : '0.0';
+
   detailBody.innerHTML = `
     <div class="detail-img-wrapper">
       ${hasDiscount ? `<span class="discount-badge">-${product.discountPercent}%</span>` : ''}
@@ -423,6 +644,11 @@ function openProductDetail(productId) {
       <span class="product-category">${product.category}</span>
       <h2 class="detail-title">${product.name}</h2>
       
+      <div class="product-rating" style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+        <span class="rating-stars">⭐ ${avgRating}</span>
+        <span class="rating-count">(${count} ulasan pembeli)</span>
+      </div>
+
       <div class="product-price-container">
         ${hasDiscount ? `<span class="original-price">${formatRupiah(product.originalPrice)}</span>` : ''}
         <span class="discount-price">${formatRupiah(product.price)}</span>
@@ -442,6 +668,38 @@ function openProductDetail(productId) {
       </button>
     </div>
   `;
+
+  // Render Daftar Komentar + Foto + Video di Modal
+  if (productReviewsContainer) {
+    productReviewsContainer.innerHTML = "";
+    if (reviewsList.length === 0) {
+      productReviewsContainer.innerHTML = `<p style="color: var(--text-muted); font-size: 0.85rem;">Belum ada ulasan tertulis untuk produk ini.</p>`;
+    } else {
+      reviewsList.forEach(rev => {
+        let starsStr = "⭐".repeat(rev.rating);
+        const revDiv = document.createElement("div");
+        revDiv.classList.add("review-card");
+
+        let mediaHTML = "";
+        if (rev.photo || rev.video) {
+          mediaHTML += `<div class="review-media-container">`;
+          if (rev.photo) mediaHTML += `<img src="${rev.photo}" class="review-media-img" onclick="window.open('${rev.photo}')">`;
+          if (rev.video) mediaHTML += `<video src="${rev.video}" class="review-media-video" controls></video>`;
+          mediaHTML += `</div>`;
+        }
+
+        revDiv.innerHTML = `
+          <div class="review-card-header">
+            <span class="review-user-name">Pembeli XemaShop (${rev.date})</span>
+            <span style="font-size: 0.8rem;">${starsStr}</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-dark);">${rev.comment}</p>
+          ${mediaHTML}
+        `;
+        productReviewsContainer.appendChild(revDiv);
+      });
+    }
+  }
 
   const sizeBtns = detailBody.querySelectorAll(".size-btn");
   sizeBtns.forEach((btn) => {

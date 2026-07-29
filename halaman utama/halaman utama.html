@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XemaShop</title>
-    <link rel="stylesheet" href="halaman utama.css?v=10">
+    <link rel="stylesheet" href="halaman utama.css?v=12">
 </head>
 <body>
 
@@ -22,6 +22,11 @@
             <button id="dark-mode-toggle" class="cart-icon" title="Ubah Mode Gelap/Terang" style="border: none; outline: none;">
                 🌙
             </button>
+
+            <!-- IKON RIWAYAT PESANAN -->
+            <div class="cart-icon" id="history-btn" title="Riwayat Pembelian">
+                📜
+            </div>
 
             <!-- IKON WISHLIST / FAVORIT -->
             <div class="cart-icon" id="wishlist-btn" title="Daftar Favorit">
@@ -122,14 +127,32 @@
         </div>
     </div>
 
-    <!-- MODAL DETAIL PRODUK (QUICK VIEW) -->
-    <div class="modal-overlay" id="product-detail-modal">
-        <div class="modal-content product-detail-card">
-            <button class="close-btn" id="close-detail-btn">&times;</button>
-            <div class="product-detail-body" id="product-detail-body"></div>
+    <!-- MODAL RIWAYAT PEMBELIAN & FORM RATING KOMPLIT -->
+    <div class="modal-overlay" id="history-modal">
+        <div class="modal-content product-detail-card" style="max-width: 650px;">
+            <button class="close-btn" id="close-history-btn">&times;</button>
+            <h2 style="margin-bottom: 1rem; color: var(--text-dark);">📜 Riwayat Pembelian & Ulasan</h2>
+            <div id="history-items-container" style="display: flex; flex-direction: column; gap: 1rem; max-height: 65vh; overflow-y: auto;">
+            </div>
         </div>
     </div>
 
+    <!-- MODAL DETAIL PRODUK + SECTION ULASAN PEMBELI -->
+    <div class="modal-overlay" id="product-detail-modal">
+        <div class="modal-content product-detail-card" style="max-width: 700px;">
+            <button class="close-btn" id="close-detail-btn">&times;</button>
+            <div class="product-detail-body" id="product-detail-body"></div>
+            
+            <!-- SECTION ULASAN SHOPEE-STYLE -->
+            <div class="reviews-section" style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-dark);">💬 Ulasan Pembeli</h3>
+                <div id="product-reviews-container" style="display: flex; flex-direction: column; gap: 1rem; max-height: 300px; overflow-y: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOMBOL LIVE CHAT WHATSAPP MELAYANG -->
     <a href="https://wa.me/6285124164662?text=Halo%20XemaShop!%20Saya%20mau%20tanya-tanya%20produk%20dong." 
        target="_blank" 
        class="floating-wa-btn" 

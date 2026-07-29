@@ -1,5 +1,5 @@
 // ======================================================
-// LOGIKA CHECKOUT + ONGKIR + VOUCHER + WHATSAPP (checkout.js)
+// LOGIKA CHECKOUT + ONGKIR + VOUCHER + WHATSAPP + RIWAYAT PEMBELIAN (checkout.js)
 // ======================================================
 
 // 1. Ambil Data Keranjang dari LocalStorage
@@ -12,13 +12,11 @@ const checkoutForm = document.getElementById("checkout-form");
 const receiptModal = document.getElementById("receipt-modal");
 const receiptDetails = document.getElementById("receipt-details");
 
-
 const inputNama = document.getElementById("nama");
 const inputPhone = document.getElementById("phone");
 const inputAlamat = document.getElementById("alamat");
 const inputPayment = document.getElementById("payment");
 const inputCourier = document.getElementById("courier");
-
 
 const voucherInput = document.getElementById("voucher-input");
 const applyVoucherBtn = document.getElementById("apply-voucher-btn");
@@ -30,7 +28,6 @@ const validVouchers = {
   "HEMAT10": 10000,    // Potongan Rp 10.000
   "XEMAPROMO": 50000   // Potongan Rp 50.000
 };
-
 
 function formatRupiah(number) {
   return new Intl.NumberFormat("id-ID", {
@@ -85,7 +82,7 @@ function renderCheckoutSummary() {
   const courierName = courierValue[0];
   const ongkirPrice = parseInt(courierValue[1]) || 0;
 
-  // Hitung Total Pembayaran Benar (Subtotal + Ongkir - Diskon)
+  // Hitung Total Pembayaran
   let grandTotal = (subtotal + ongkirPrice) - activeDiscount;
   if (grandTotal < 0) grandTotal = 0;
 
@@ -100,7 +97,6 @@ function renderCheckoutSummary() {
   if (ongkirElem) ongkirElem.textContent = formatRupiah(ongkirPrice);
   if (courierLabelElem) courierLabelElem.textContent = `Ongkir (${courierName}):`;
 
-  // Tampilkan Baris Diskon jika ada voucher yang berhasil digunakan
   if (discountRow && checkoutDiscount) {
     if (activeDiscount > 0) {
       discountRow.style.display = "flex";
@@ -110,7 +106,6 @@ function renderCheckoutSummary() {
     }
   }
 
-  // Tampilkan Total Pembayaran
   if (checkoutTotalPrice) {
     checkoutTotalPrice.textContent = formatRupiah(grandTotal);
   }
@@ -163,6 +158,24 @@ checkoutForm.addEventListener("submit", (e) => {
 
   const orderId = "XEMA-" + Math.floor(100000 + Math.random() * 900000);
 
+  // SIMPAN KE RIWAYAT PEMBELIAN (PURCHASE HISTORY)
+  let orderHistory = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
+  const newOrder = {
+    orderId: orderId,
+    date: new Date().toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' }),
+    items: cart.map(item => ({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      image: item.image,
+      quantity: item.quantity,
+      userRating: 0
+    }))
+  };
+
+  orderHistory.unshift(newOrder);
+  localStorage.setItem("ORDER_HISTORY_XEMA", JSON.stringify(orderHistory));
+
   receiptDetails.innerHTML = `
     <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 0.6rem;">
       <p style="margin-bottom: 0.2rem;"><strong>ID Pesanan:</strong> <span style="color: #2563eb;">${orderId}</span></p>
@@ -192,7 +205,6 @@ checkoutForm.addEventListener("submit", (e) => {
 
   const adminWaNumber = "6285124164662";
 
-  
   let itemDetailsText = "";
   cart.forEach(item => {
     itemDetailsText += `- ${item.name} (${item.quantity}x)\n`;

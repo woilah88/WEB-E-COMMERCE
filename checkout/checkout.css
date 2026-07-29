@@ -1,5 +1,5 @@
 /* ======================================================
-   STYLESHEET CHECKOUT (SAMAKAN 100% DENGAN HALAMAN UTAMA)
+   STYLESHEET CHECKOUT (FIX MOBILE LAYOUT & CENTERED)
    ====================================================== */
 
 * {
@@ -28,9 +28,10 @@ body {
   color: var(--text-dark);
   line-height: 1.6;
   min-height: 100vh;
+  overflow-x: hidden; /* Mencegah layar HP bisa digeser horizontal */
 }
 
-/* HEADER CHECKOUT RAPI DI HP */
+/* HEADER CHECKOUT */
 .checkout-header {
   position: sticky;
   top: 0;
@@ -41,47 +42,48 @@ body {
   align-items: center;
   padding: 0.8rem 5%;
   z-index: 100;
-  gap: 0.5rem;
 }
 
 .logo {
   color: var(--primary-color);
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: -0.5px;
 }
 
+/* MAIN CONTAINER (DIATUR SUPAYA TIDAK MELUAP DI HP) */
 .container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
+  max-width: 1000px;
+  margin: 1rem auto;
+  padding: 0 1rem;
+  width: 100%;
 }
 
 .page-title {
   text-align: center;
-  margin: 1.5rem 0 2rem 0;
-  font-size: 1.75rem;
+  margin: 1rem 0 1.2rem 0;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-dark);
 }
 
-/* CONTAINER DUA KOTAK KIRI & KANAN */
+/* CONTAINER CHECKOUT GRID (1 KOLOM DI HP, 2 KOLOM DI LAPTOP) */
 .checkout-container {
-  max-width: 1000px;
-  margin: 1.5rem auto;
-  padding: 0 1rem;
+  width: 100%;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 1.5rem;
+  grid-template-columns: 1fr 360px;
+  gap: 1.2rem;
 }
 
 .form-section,
 .summary-section {
   background-color: var(--card-bg);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.2rem;
   box-shadow: var(--shadow);
   border: 1px solid var(--border-color);
+  width: 100%;
 }
 
 .form-section h2,
@@ -89,11 +91,11 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-dark);
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 0.9rem;
 }
 
 .form-group label {
@@ -101,18 +103,18 @@ body {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-dark);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 0.6rem 0.85rem;
+  padding: 0.6rem 0.8rem;
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   outline: none;
   color: var(--text-dark);
   transition: all 0.2s ease;
@@ -126,7 +128,7 @@ body {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-/* TOMBOL CHECKOUT HIJAU SAMA DENGAN CART FOOTER */
+/* TOMBOL CHECKOUT */
 .checkout-btn {
   width: 100%;
   background-color: var(--accent-green);
@@ -135,7 +137,7 @@ body {
   padding: 0.8rem;
   border-radius: 8px;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
   margin-top: 0.5rem;
@@ -145,17 +147,17 @@ body {
   background-color: #059669;
 }
 
-/* ITEM RINGKASAN BELANJA */
+/* RINGKASAN ITEM */
 .summary-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 0;
+  gap: 0.8rem;
+  padding: 0.6rem 0;
 }
 
 .summary-img {
-  width: 55px;
-  height: 55px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid var(--border-color);
@@ -166,24 +168,24 @@ body {
 }
 
 .summary-title {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--text-dark);
 }
 
 .summary-qty {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
 }
 
 .summary-price {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--primary-color);
 }
 
 .summary-divider {
-  margin: 1rem 0;
+  margin: 0.8rem 0;
   border: none;
   border-top: 1px solid var(--border-color);
 }
@@ -192,7 +194,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--text-dark);
 }
 
@@ -201,14 +203,14 @@ body {
   color: var(--primary-color);
 }
 
-/* TOMBOL KEMBALI SEPERTI BADGE SPAN */
+/* TOMBOL KEMBALI */
 .back-btn {
   display: inline-block;
-  padding: 0.4rem 1rem;
+  padding: 0.35rem 0.85rem;
   background-color: var(--card-bg);
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   border-radius: 20px;
   border: 1px solid var(--border-color);
@@ -220,7 +222,7 @@ body {
   color: var(--primary-color);
 }
 
-/* MODAL NOTA RESPONSIF MOBILE */
+/* MODAL RECEIPT / NOTA */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -232,6 +234,7 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 200;
+  padding: 1rem;
 }
 
 .modal-overlay.active {
@@ -240,24 +243,29 @@ body {
 
 .receipt-card {
   background: var(--card-bg);
-  padding: 1.5rem;
+  padding: 1.2rem;
   border-radius: 12px;
-  max-width: 440px;
-  width: 90%;
+  max-width: 420px;
+  width: 95%;
   max-height: 90vh;
   overflow-y: auto;
   text-align: center;
   box-shadow: var(--shadow-hover);
 }
 
-@media (max-width: 600px) {
-  .checkout-container {
-    grid-template-columns: 1fr;
-    padding: 0 0.8rem;
+/* RESPONSIVE UNTUK LAYAR HP (< 768px) */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.6rem;
   }
 
-  .receipt-card {
-    padding: 1.2rem;
-    width: 92%;
+  .checkout-container {
+    grid-template-columns: 1fr; /* Wajib 1 kolom di HP */
+    gap: 1rem;
+  }
+
+  .form-section,
+  .summary-section {
+    padding: 1rem;
   }
 }

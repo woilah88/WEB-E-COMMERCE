@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,13 +22,55 @@
         </div>
     </header>
 
+    <!-- BANNER PROMO SLIDER (HERO CAROUSEL) -->
+    <section class="carousel-container">
+      <div class="carousel-slide fade">
+        <div class="banner-content banner-1">
+          <h2>🔥 Promo Spesial XemaShop</h2>
+          <p>Dapatkan diskon hingga 50% untuk produk pilihan minggu ini!</p>
+        </div>
+      </div>
+      <div class="carousel-slide fade">
+        <div class="banner-content banner-2">
+          <h2>🎉 Potongan Ekstra Promo Sale</h2>
+          <p>Nikmati penawaran harga spesial langsung tanpa syarat di katalog kami!</p>
+        </div>
+      </div>
+      <div class="carousel-slide fade">
+        <div class="banner-content banner-3">
+          <h2>🚚 Bebas Ongkir Ke Seluruh Indonesia</h2>
+          <p>Nikmati pengiriman cepat dan hemat hanya di XemaShop.</p>
+        </div>
+      </div>
+
+      <button class="prev-slide" onclick="moveSlide(-1)">&#10094;</button>
+      <button class="next-slide" onclick="moveSlide(1)">&#10095;</button>
+
+      <div class="carousel-dots">
+        <span class="dot" onclick="currentSlide(0)"></span>
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+      </div>
+    </section>
+
     <main class="container">
         <h1 class="page-title">Katalog Produk</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
         <div class="category-filters" style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
             <button class="filter-btn active" data-category="all">Semua</button>
             <button class="filter-btn" data-category="PAKAIAN">Pakaian</button>
             <button class="filter-btn" data-category="SEPATU">Sepatu</button>
             <button class="filter-btn" data-category="AKSESORIS">Aksesoris</button>
+        </div>
+
+        <div class="sort-box">
+                <label for="sort-select" style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-right: 0.4rem;">Urutkan:</label>
+                <select id="sort-select" style="padding: 0.4rem 0.8rem; border: 1px solid var(--border-color); border-radius: 20px; outline: none; font-size: 0.85rem; background: var(--card-bg); cursor: pointer; color: var(--text-dark); font-weight: 600;">
+                    <option value="default">Paling Sesuai</option>
+                    <option value="lowest">Harga: Terendah ke Tertinggi</option>
+                    <option value="highest">Harga: Tertinggi ke Terendah</option>
+                </select>
+            </div>
         </div>
         
         <div class="product-grid" id="product-container">
@@ -55,6 +97,18 @@
             <button class="checkout-btn" id="checkout-btn">checkout sekarang</button>
         </div>
     </aside>
+
+    <!-- MODAL DETAIL PRODUK (QUICK VIEW) -->
+    <div class="modal-overlay" id="product-detail-modal">
+        <div class="modal-content product-detail-card">
+            <button class="close-btn" id="close-detail-btn">&times;</button>
+            <div class="product-detail-body" id="product-detail-body">
+            </div>
+        </div>
+    </div>
+
+    <!-- WADAH TOAST NOTIFIKASI MELAYANG -->
+    <div id="toast-container"></div>
 
     <script src="produk.js"></script>
     <script src="app.js"></script>

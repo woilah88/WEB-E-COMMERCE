@@ -1,4 +1,4 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -25,6 +25,7 @@ body {
   line-height: 1.6;
 }
 
+/* NAVBAR */
 .navbar {
   position: sticky;
   top: 0;
@@ -89,6 +90,7 @@ body {
   border-radius: 50%;
 }
 
+/* CONTAINER & KATALOG PRODUK */
 .container {
   max-width: 1200px;
   margin: 2rem auto;
@@ -163,12 +165,6 @@ body {
   margin-top: auto;
 }
 
-.product-price {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
 .add-to-cart-btn {
   background-color: var(--primary-color);
   color: white;
@@ -184,6 +180,7 @@ body {
   background-color: var(--primary-hover);
 }
 
+/* KERANJANG DRAWER */
 .cart-overlay {
   position: fixed;
   top: 0;
@@ -237,7 +234,6 @@ body {
   cursor: pointer;
   color: var(--text-muted);
 }
-
 
 .cart-items {
   padding: 1rem;
@@ -307,7 +303,6 @@ body {
   font-size: 0.8rem;
 }
 
-
 .cart-footer {
   padding: 1.2rem;
   border-top: 1px solid var(--border-color);
@@ -338,22 +333,7 @@ body {
   background-color: #059669;
 }
 
-@media (max-width: 600px) {
-  .navbar {
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-  
-  .search-box input {
-    width: 100%;
-  }
-  
-  .cart-drawer {
-    width: 100%;
-  }
-}
-
-/* STYLING TOMBOL FILTER KATEGORI */
+/* FILTER KATEGORI */
 .filter-btn {
   padding: 0.4rem 1rem;
   background-color: var(--card-bg);
@@ -376,4 +356,345 @@ body {
   background-color: var(--primary-color);
   color: white;
   border-color: var(--primary-color);
+}
+
+/* CAROUSEL BANNER PROMO */
+.carousel-container {
+  max-width: 1200px;
+  margin: 1.5rem auto 0 auto;
+  padding: 0 1.5rem;
+  position: relative;
+}
+
+.carousel-slide {
+  display: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.banner-content {
+  padding: 2.5rem 2rem;
+  color: white;
+  text-align: center;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 160px;
+}
+
+.banner-1 {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+}
+.banner-2 {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+}
+.banner-3 {
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+}
+
+.banner-content h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.banner-content p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.prev-slide, .next-slide {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text-dark);
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.prev-slide { left: 2.2rem; }
+.next-slide { right: 2.2rem; }
+
+.prev-slide:hover, .next-slide:hover {
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-dots {
+  text-align: center;
+  margin-top: 0.6rem;
+}
+
+.dot {
+  cursor: pointer;
+  height: 8px;
+  width: 8px;
+  margin: 0 4px;
+  background-color: #cbd5e1;
+  border-radius: 50%;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.dot.active, .dot:hover {
+  background-color: var(--primary-color);
+  width: 20px;
+  border-radius: 10px;
+}
+
+.fade {
+  animation: fadeAnim 0.5s ease-in-out;
+}
+
+@keyframes fadeAnim {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+/* TOAST NOTIFICATION */
+#toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background-color: var(--text-dark);
+  color: #ffffff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-left: 4px solid var(--accent-green);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* BADGE DISKON MERAH & HARGA CORET */
+.product-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.product-price-container {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.original-price {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: line-through; 
+}
+
+.discount-price {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* MODAL DETAIL PRODUK (QUICK VIEW) - DISET PRESISI CENTER */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.product-detail-card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+  padding: 1.5rem;
+  margin: auto;
+}
+
+.modal-overlay.active .product-detail-card {
+  transform: scale(1);
+}
+
+.product-detail-card .close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  font-size: 1.8rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.product-detail-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.detail-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.detail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.detail-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.detail-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.size-selector {
+  margin: 0.4rem 0;
+}
+
+.size-selector label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 0.3rem;
+}
+
+.size-options {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.size-btn {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.size-btn.active, .size-btn:hover {
+  border-color: var(--primary-color);
+  background: var(--primary-color);
+  color: white;
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .search-box input {
+    width: 100%;
+  }
+  
+  .cart-drawer {
+    width: 100%;
+  }
+
+  .banner-content h2 { 
+    font-size: 1.2rem; 
+  }
+
+  .banner-content p { 
+    font-size: 0.85rem; 
+  }
+
+  .product-detail-card {
+    padding: 1.2rem;
+    width: 92%;
+  }
+
+  .product-detail-body {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .detail-img-wrapper {
+    height: 180px;
+  }
 }

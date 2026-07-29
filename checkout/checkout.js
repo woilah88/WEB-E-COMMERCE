@@ -12,19 +12,18 @@ const checkoutForm = document.getElementById("checkout-form");
 const receiptModal = document.getElementById("receipt-modal");
 const receiptDetails = document.getElementById("receipt-details");
 
-// Form Inputs
+
 const inputNama = document.getElementById("nama");
 const inputPhone = document.getElementById("phone");
 const inputAlamat = document.getElementById("alamat");
 const inputPayment = document.getElementById("payment");
 const inputCourier = document.getElementById("courier");
 
-// Voucher Elements
+
 const voucherInput = document.getElementById("voucher-input");
 const applyVoucherBtn = document.getElementById("apply-voucher-btn");
 const voucherMessage = document.getElementById("voucher-message");
 
-// Variabel Voucher (Daftar Kode Promo Aktif)
 let activeDiscount = 0;
 const validVouchers = {
   "XEMA2026": 20000,   // Potongan Rp 20.000
@@ -32,7 +31,7 @@ const validVouchers = {
   "XEMAPROMO": 50000   // Potongan Rp 50.000
 };
 
-// Helper Format Rupiah
+
 function formatRupiah(number) {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -164,7 +163,6 @@ checkoutForm.addEventListener("submit", (e) => {
 
   const orderId = "XEMA-" + Math.floor(100000 + Math.random() * 900000);
 
-  // Rincian Nota Modal
   receiptDetails.innerHTML = `
     <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 0.6rem;">
       <p style="margin-bottom: 0.2rem;"><strong>ID Pesanan:</strong> <span style="color: #2563eb;">${orderId}</span></p>
@@ -192,8 +190,8 @@ checkoutForm.addEventListener("submit", (e) => {
     </div>
   `;
 
-  // Draf Pesan WhatsApp Otomatis
-  const adminWaNumber = "6282229008917"; 
+  const adminWaNumber = "6285124164662";
+
   
   let itemDetailsText = "";
   cart.forEach(item => {

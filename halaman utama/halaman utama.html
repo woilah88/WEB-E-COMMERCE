@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XemaShop</title>
-    <link rel="stylesheet" href="halaman utama.css?v=2">
+    <link rel="stylesheet" href="halaman utama.css?v=10">
 </head>
 <body>
 
@@ -17,8 +17,21 @@
             <input type="text" id="search-input" placeholder="Cari produk">
         </div>
 
-        <div class="cart-icon" id="cart-btn">
-            🛒 <span id="cart-count">0</span>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <!-- TOMBOL SAKELAR DARK MODE -->
+            <button id="dark-mode-toggle" class="cart-icon" title="Ubah Mode Gelap/Terang" style="border: none; outline: none;">
+                🌙
+            </button>
+
+            <!-- IKON WISHLIST / FAVORIT -->
+            <div class="cart-icon" id="wishlist-btn" title="Daftar Favorit">
+                ❤️ <span id="wishlist-count">0</span>
+            </div>
+
+            <!-- IKON KERANJANG -->
+            <div class="cart-icon" id="cart-btn" title="Keranjang Belanja">
+                🛒 <span id="cart-count">0</span>
+            </div>
         </div>
     </header>
 
@@ -26,13 +39,13 @@
     <section class="carousel-container">
       <div class="carousel-slide fade">
         <div class="banner-content banner-1">
-          <h2>🔥 Promo Spesial XemaShop</h2>
+          <h2>🎁 Promo Spesial XemaShop</h2>
           <p>Dapatkan diskon hingga 50% untuk produk pilihan minggu ini!</p>
         </div>
       </div>
       <div class="carousel-slide fade">
         <div class="banner-content banner-2">
-          <h2>🎉 Potongan Ekstra Promo Sale</h2>
+          <h2>🔥 Potongan Ekstra Promo Sale</h2>
           <p>Nikmati penawaran harga spesial langsung tanpa syarat di katalog kami!</p>
         </div>
       </div>
@@ -56,29 +69,30 @@
     <main class="container">
         <h1 class="page-title">Katalog Produk</h1>
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
-        <div class="category-filters" style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-            <button class="filter-btn active" data-category="all">Semua</button>
-            <button class="filter-btn" data-category="PAKAIAN">Pakaian</button>
-            <button class="filter-btn" data-category="SEPATU">Sepatu</button>
-            <button class="filter-btn" data-category="AKSESORIS">Aksesoris</button>
-        </div>
+          <div class="category-filters" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button class="filter-btn active" data-category="all">Semua</button>
+              <button class="filter-btn" data-category="PAKAIAN">Pakaian</button>
+              <button class="filter-btn" data-category="SEPATU">Sepatu</button>
+              <button class="filter-btn" data-category="AKSESORIS">Aksesoris</button>
+          </div>
 
-        <div class="sort-box">
-                <label for="sort-select" style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-right: 0.4rem;">Urutkan:</label>
-                <select id="sort-select" style="padding: 0.4rem 0.8rem; border: 1px solid var(--border-color); border-radius: 20px; outline: none; font-size: 0.85rem; background: var(--card-bg); cursor: pointer; color: var(--text-dark); font-weight: 600;">
-                    <option value="default">Paling Sesuai</option>
-                    <option value="lowest">Harga: Terendah ke Tertinggi</option>
-                    <option value="highest">Harga: Tertinggi ke Terendah</option>
-                </select>
-            </div>
+          <div class="sort-box">
+              <label for="sort-select" style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-right: 0.4rem;">Urutkan:</label>
+              <select id="sort-select" style="padding: 0.4rem 0.8rem; border: 1px solid var(--border-color); border-radius: 20px; outline: none; font-size: 0.85rem; background: var(--card-bg); cursor: pointer; color: var(--text-dark); font-weight: 600;">
+                  <option value="default">Paling Sesuai</option>
+                  <option value="lowest">Terendah ke Tertinggi</option>
+                  <option value="highest">Tertinggi ke Terendah</option>
+              </select>
+          </div>
         </div>
         
-        <div class="product-grid" id="product-container">
-        </div>
+        <div class="product-grid" id="product-container"></div>
     </main>
 
+    <!-- OVERLAY CART -->
     <div class="cart-overlay" id="cart-overlay"></div>
 
+    <!-- DRAWER KERANJANG BELANJA -->
     <aside class="cart-drawer" id="cart-drawer">
         <div class="cart-header">
             <h3>Keranjang Belanja</h3>
@@ -94,21 +108,34 @@
                 <span>Total:</span>
                 <strong id="cart-total-price">Rp 0</strong>
             </div>
-            <button class="checkout-btn" id="checkout-btn">checkout sekarang</button>
+            <button class="checkout-btn" id="checkout-btn">Checkout Sekarang</button>
         </div>
     </aside>
+
+    <!-- MODAL WISHLIST / FAVORIT -->
+    <div class="modal-overlay" id="wishlist-modal">
+        <div class="modal-content product-detail-card">
+            <button class="close-btn" id="close-wishlist-btn">&times;</button>
+            <h2 style="margin-bottom: 1rem; color: var(--text-dark);">❤️ Favorit Saya</h2>
+            <div id="wishlist-items-container" style="display: flex; flex-direction: column; gap: 1rem; max-height: 60vh; overflow-y: auto;">
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL DETAIL PRODUK (QUICK VIEW) -->
     <div class="modal-overlay" id="product-detail-modal">
         <div class="modal-content product-detail-card">
             <button class="close-btn" id="close-detail-btn">&times;</button>
-            <div class="product-detail-body" id="product-detail-body">
-            </div>
+            <div class="product-detail-body" id="product-detail-body"></div>
         </div>
     </div>
 
-    <!-- WADAH TOAST NOTIFIKASI MELAYANG -->
-    <div id="toast-container"></div>
+    <a href="https://wa.me/6285124164662?text=Halo%20XemaShop!%20Saya%20mau%20tanya-tanya%20produk%20dong." 
+       target="_blank" 
+       class="floating-wa-btn" 
+       title="Chat Customer Service">
+       💬
+    </a>
 
     <script src="produk.js"></script>
     <script src="app.js"></script>

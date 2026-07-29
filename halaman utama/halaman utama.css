@@ -19,15 +19,33 @@
   --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
+/* DARK MODE TEMA */
+body.dark-mode {
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --text-dark: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
 body {
   background-color: var(--bg-color);
   color: var(--text-dark);
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ==========================================
-   1. NAVBAR RESPONSIF (SATU BARIS DI HP)
-   ========================================== */
+body.dark-mode select,
+body.dark-mode input,
+body.dark-mode textarea {
+  color: var(--text-dark);
+  background-color: #1e293b;
+  border-color: var(--border-color);
+}
+
+/* NAVBAR */
 .navbar {
   position: sticky;
   top: 0;
@@ -88,7 +106,7 @@ body {
   background: #e2e8f0;
 }
 
-#cart-count {
+#cart-count, #wishlist-count {
   position: absolute;
   top: -2px;
   right: -2px;
@@ -100,9 +118,7 @@ body {
   border-radius: 50%;
 }
 
-/* ==========================================
-   2. CONTAINER & KATALOG PRODUK
-   ========================================== */
+/* CONTAINER & KATALOG PRODUK */
 .container {
   max-width: 1200px;
   margin: 1.5rem auto;
@@ -136,7 +152,6 @@ body {
   box-shadow: var(--shadow-hover);
 }
 
-/* FOTO PRODUK DIATUR PROPORSIONAL */
 .product-image-wrapper {
   position: relative;
   width: 100%;
@@ -149,6 +164,52 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* TOMBOL HATI FAVORIT DI TIAP FOTO PRODUK */
+.wishlist-heart-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.wishlist-heart-btn:hover {
+  transform: scale(1.15);
+  background: white;
+}
+
+.wishlist-heart-btn.active {
+  background: #fee2e2;
+}
+
+.wishlist-item-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--card-bg);
+}
+
+.wishlist-item-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .product-info {
@@ -179,7 +240,6 @@ body {
   flex-grow: 1;
 }
 
-/* BARIS HARGA & TOMBOL RAPI & ANTI BENTROK */
 .product-bottom {
   display: flex;
   justify-content: space-between;
@@ -224,9 +284,7 @@ body {
   background-color: var(--primary-hover);
 }
 
-/* ==========================================
-   3. KERANJANG DRAWER
-   ========================================== */
+/* KERANJANG DRAWER */
 .cart-overlay {
   position: fixed;
   top: 0;
@@ -379,9 +437,7 @@ body {
   background-color: #059669;
 }
 
-/* ==========================================
-   4. FILTER KATEGORI & CAROUSEL
-   ========================================== */
+/* FILTER & CAROUSEL */
 .filter-btn {
   padding: 0.4rem 0.9rem;
   background-color: var(--card-bg);
@@ -432,15 +488,9 @@ body {
   min-height: 140px;
 }
 
-.banner-1 {
-  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-}
-.banner-2 {
-  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-}
-.banner-3 {
-  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-}
+.banner-1 { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); }
+.banner-2 { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
+.banner-3 { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); }
 
 .banner-content h2 {
   font-size: 1.3rem;
@@ -503,41 +553,6 @@ body {
   to { opacity: 1; }
 }
 
-/* ==========================================
-   5. TOAST NOTIFICATION & BADGE
-   ========================================== */
-#toast-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.toast {
-  background-color: var(--text-dark);
-  color: #ffffff;
-  padding: 0.8rem 1.2rem;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-left: 4px solid var(--accent-green);
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.3s ease;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .discount-badge {
   position: absolute;
   top: 10px;
@@ -552,9 +567,7 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-/* ==========================================
-   6. MODAL DETAIL PRODUK (QUICK VIEW)
-   ========================================== */
+/* MODAL DETAIL PRODUK */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -681,9 +694,6 @@ body {
   color: white;
 }
 
-/* ==========================================
-   7. KHUSUS MEDIA QUERIES LAYAR HP (< 600px)
-   ========================================== */
 @media (max-width: 600px) {
   .navbar {
     padding: 0.6rem 0.8rem;
@@ -721,14 +731,41 @@ body {
   .detail-img-wrapper {
     height: 180px;
   }
+}
 
-  #toast-container {
+/* ==========================================
+   FLOATING WHATSAPP CHAT BUTTON (SUPER RINGAN)
+   ========================================== */
+.floating-wa-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #25d366;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 999;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.floating-wa-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+}
+
+@media (max-width: 600px) {
+  .floating-wa-btn {
     bottom: 15px;
     right: 15px;
-    left: 15px;
-  }
-
-  .toast {
-    justify-content: center;
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
   }
 }

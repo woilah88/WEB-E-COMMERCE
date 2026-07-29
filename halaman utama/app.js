@@ -1,17 +1,18 @@
 // ==========================================
-// LOGIKA UTAMA: SEARCH, FILTER, SORTING, & KERANJANG (app.js)
+// LOGIKA UTAMA: KATALOG, WISHLIST, DARK MODE, & KERANJANG (app.js)
 // ==========================================
 
-// 1. Data Keranjang dari LocalStorage
+// 1. Data LocalStorage
 let cart = JSON.parse(localStorage.getItem("CART_XEMASHOP")) || [];
+let wishlist = JSON.parse(localStorage.getItem("WISHLIST_XEMASHOP")) || [];
 
-// Element DOM Produk, Filter, & Sorting
+// Element DOM Produk & Sorting
 const productContainer = document.getElementById("product-container");
 const searchInput = document.getElementById("search-input");
 const filterButtons = document.querySelectorAll(".filter-btn");
 const sortSelect = document.getElementById("sort-select");
 
-// Element DOM Cart Drawer / Sidepanel
+// Element DOM Cart Drawer
 const cartBtn = document.getElementById("cart-btn");
 const closeCartBtn = document.getElementById("close-cart-btn");
 const cartDrawer = document.getElementById("cart-drawer");
@@ -25,6 +26,16 @@ const checkoutBtn = document.getElementById("checkout-btn");
 const detailModal = document.getElementById("product-detail-modal");
 const closeDetailBtn = document.getElementById("close-detail-btn");
 const detailBody = document.getElementById("product-detail-body");
+
+// Element DOM Wishlist Modal
+const wishlistBtn = document.getElementById("wishlist-btn");
+const wishlistCount = document.getElementById("wishlist-count");
+const wishlistModal = document.getElementById("wishlist-modal");
+const closeWishlistBtn = document.getElementById("close-wishlist-btn");
+const wishlistItemsContainer = document.getElementById("wishlist-items-container");
+
+// Element DOM Dark Mode
+const darkModeToggle = document.getElementById("dark-mode-toggle");
 
 let currentCategory = "all";
 let currentSearchQuery = "";
@@ -47,7 +58,6 @@ function renderProducts() {
   if (!productContainer) return;
   productContainer.innerHTML = "";
 
-  // 1. Filter Kategori & Pencarian
   let filteredProducts = products.filter((product) => {
     const matchCategory = currentCategory === "all" || product.category.toUpperCase() === currentCategory.toUpperCase();
     const matchSearch = product.name.toLowerCase().includes(currentSearchQuery.toLowerCase()) || 
@@ -55,7 +65,6 @@ function renderProducts() {
     return matchCategory && matchSearch;
   });
 
-  // 2. Sorting Berdasarkan Harga
   if (currentSortOption === "lowest") {
     filteredProducts.sort((a, b) => a.price - b.price);
   } else if (currentSortOption === "highest") {
@@ -71,13 +80,19 @@ function renderProducts() {
     const productCard = document.createElement("div");
     productCard.classList.add("product-cart");
     
-    // Cek apakah ada diskon produk
     const hasDiscount = product.discountPercent && product.originalPrice;
+    const isWishlisted = wishlist.includes(product.id);
     
     productCard.innerHTML = `
-      <div class="product-image-wrapper" onclick="openProductDetail(${product.id})" style="cursor: pointer;">
+      <div class="product-image-wrapper">
         ${hasDiscount ? `<span class="discount-badge">-${product.discountPercent}%</span>` : ''}
-        <img src="${product.image}" alt="${product.name}" class="product-image">
+        
+        <!-- TOMBOL HATI FAVORIT DI TIAP FOTO PRODUK -->
+        <button class="wishlist-heart-btn ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(event, ${product.id})" title="Tambah/Hapus Favorit">
+          ${isWishlisted ? '❤️' : '🤍'}
+        </button>
+
+        <img src="${product.image}" alt="${product.name}" class="product-image" onclick="openProductDetail(${product.id})" style="cursor: pointer;">
       </div>
       <div class="product-info">
         <span class="product-category">${product.category}</span>
@@ -121,12 +136,99 @@ if (sortSelect) {
   });
 }
 
+// ==========================================
+// B. LOGIKA WISHLIST / FAVORIT PRODUK
+// ==========================================
+
+function toggleWishlist(event, productId) {
+  if (event) event.stopPropagation();
+
+  const index = wishlist.indexOf(productId);
+
+  if (index > -1) {
+    wishlist.splice(index, 1);
+  } else {
+    wishlist.push(productId);
+  }
+
+  localStorage.setItem("WISHLIST_XEMASHOP", JSON.stringify(wishlist));
+  updateWishlistUI();
+  renderProducts();
+}
+
+function updateWishlistUI() {
+  if (wishlistCount) wishlistCount.textContent = wishlist.length;
+
+  if (!wishlistItemsContainer) return;
+  wishlistItemsContainer.innerHTML = "";
+
+  if (wishlist.length === 0) {
+    wishlistItemsContainer.innerHTML = `<p style="text-align: center; color: var(--text-muted); margin: 1.5rem 0;">Belum ada produk favorit.</p>`;
+    return;
+  }
+
+  wishlist.forEach((id) => {
+    const product = products.find(p => p.id === id);
+    if (!product) return;
+
+    const itemDiv = document.createElement("div");
+    itemDiv.classList.add("wishlist-item-card");
+    itemDiv.innerHTML = `
+      <img src="${product.image}" alt="${product.name}" class="wishlist-item-img">
+      <div style="flex-grow: 1;">
+        <h4 style="font-size: 0.95rem;">${product.name}</h4>
+        <p style="color: var(--primary-color); font-weight: bold; font-size: 0.9rem;">${formatRupiah(product.price)}</p>
+      </div>
+      <button class="add-to-cart-btn" style="padding: 0.4rem 0.7rem;" onclick="addToCart(${product.id})">+ Keranjang</button>
+      <button style="background: none; border: none; font-size: 1.2rem; cursor: pointer;" onclick="toggleWishlist(null, ${product.id})">🗑️</button>
+    `;
+    wishlistItemsContainer.appendChild(itemDiv);
+  });
+}
+
+if (wishlistBtn) {
+  wishlistBtn.addEventListener("click", () => {
+    updateWishlistUI();
+    if (wishlistModal) wishlistModal.classList.add("active");
+  });
+}
+
+if (closeWishlistBtn) {
+  closeWishlistBtn.addEventListener("click", () => {
+    if (wishlistModal) wishlistModal.classList.remove("active");
+  });
+}
 
 // ==========================================
-// B. MANAJEMEN KERANJANG BELANJA
+// C. LOGIKA DARK MODE TOGGLE
 // ==========================================
 
-// 1. Tambah Produk ke Keranjang
+function initDarkMode() {
+  const isDarkMode = localStorage.getItem("DARK_MODE_XEMA") === "true";
+  
+  if (isDarkMode) {
+    document.body.classList.add("dark-mode");
+    if (darkModeToggle) darkModeToggle.textContent = "☀️";
+  } else {
+    document.body.classList.remove("dark-mode");
+    if (darkModeToggle) darkModeToggle.textContent = "🌙";
+  }
+}
+
+if (darkModeToggle) {
+  darkModeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    const activeDark = document.body.classList.contains("dark-mode");
+    
+    localStorage.setItem("DARK_MODE_XEMA", activeDark);
+    darkModeToggle.textContent = activeDark ? "☀️" : "🌙";
+  });
+}
+
+// ==========================================
+// D. MANAJEMEN KERANJANG BELANJA
+// ==========================================
+
 function addToCart(productId) {
   const product = products.find((p) => p.id === productId);
   if (!product) return;
@@ -148,15 +250,12 @@ function addToCart(productId) {
   saveCart();
   renderCart();
   openCartDrawer();
-  showToast(`${product.name} berhasil ditambahkan!`);
 }
 
-// 2. Simpan Keranjang ke LocalStorage
 function saveCart() {
   localStorage.setItem("CART_XEMASHOP", JSON.stringify(cart));
 }
 
-// 3. Render Isi Keranjang
 function renderCart() {
   if (!cartItemsContainer) return;
   cartItemsContainer.innerHTML = "";
@@ -194,7 +293,6 @@ function renderCart() {
   if (cartTotalPrice) cartTotalPrice.textContent = formatRupiah(totalPrice);
 }
 
-// 4. Ubah Jumlah Quantity (+ / -)
 function updateQuantity(productId, change) {
   const item = cart.find((i) => i.id === productId);
   if (!item) return;
@@ -209,16 +307,11 @@ function updateQuantity(productId, change) {
   }
 }
 
-// 5. Hapus Produk dari Keranjang
 function removeFromCart(productId) {
   cart = cart.filter((item) => item.id !== productId);
   saveCart();
   renderCart();
 }
-
-// ==========================================
-// C. BUKA / TUTUP DRAWER KERANJANG & CHECKOUT
-// ==========================================
 
 function openCartDrawer() {
   if (cartDrawer && cartOverlay) {
@@ -249,7 +342,7 @@ if (checkoutBtn) {
 }
 
 // ==========================================
-// D. LOGIKA CAROUSEL SLIDER BANNER PROMO
+// E. BANNER CAROUSEL
 // ==========================================
 let slideIndex = 0;
 let slideTimer;
@@ -288,32 +381,14 @@ function currentSlide(index) {
 }
 
 // ==========================================
-// E. LOGIKA TOAST NOTIFICATION
+// F. TOAST NOTIFICATION (DISABLED)
 // ==========================================
 function showToast(message) {
-  const container = document.getElementById("toast-container");
-  if (!container) return;
-
-  const toast = document.createElement("div");
-  toast.classList.add("toast");
-  toast.innerHTML = `<span>✅</span> <span>${message}</span>`;
-
-  container.appendChild(toast);
-
-  setTimeout(() => {
-    toast.classList.add("show");
-  }, 100);
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-    setTimeout(() => {
-      toast.remove();
-    }, 300);
-  }, 3000);
+  return;
 }
 
 // ==========================================
-// F. LOGIKA MODAL DETAIL PRODUK + UKURAN DINAMIS
+// G. MODAL DETAIL PRODUK + UKURAN
 // ==========================================
 function openProductDetail(productId) {
   const product = products.find((p) => p.id === productId);
@@ -321,7 +396,6 @@ function openProductDetail(productId) {
 
   const hasDiscount = product.discountPercent && product.originalPrice;
 
-  // Ukuran Dinamis Berdasarkan Kategori
   let sizeLabel = "Pilih Ukuran:";
   let sizesList = [];
 
@@ -369,7 +443,6 @@ function openProductDetail(productId) {
     </div>
   `;
 
-  // Event klik ganti warna aktif pada tombol ukuran
   const sizeBtns = detailBody.querySelectorAll(".size-btn");
   sizeBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -396,7 +469,9 @@ if (detailModal) {
 // INISIALISASI HALAMAN
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
+  initDarkMode();
   renderProducts();
   renderCart();
+  updateWishlistUI();
   showSlides(0);
 });

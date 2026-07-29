@@ -179,13 +179,14 @@ body {
   flex-grow: 1;
 }
 
-/* BARIS HARGA & TOMBOL RAPI */
+/* BARIS HARGA & TOMBOL RAPI & ANTI BENTROK */
 .product-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .product-price-container {

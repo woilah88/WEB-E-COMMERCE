@@ -30,16 +30,18 @@ body {
   min-height: 100vh;
 }
 
-/* HEADER SAMAKAN DENGAN NAVBAR UTAMA */
+/* HEADER CHECKOUT RAPI DI HP */
 .checkout-header {
   position: sticky;
   top: 0;
   background-color: var(--card-bg);
   box-shadow: 0 2px 4px rgba(0,0,0,0.08);
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 1rem 5%;
+  padding: 0.8rem 5%;
   z-index: 100;
+  gap: 0.5rem;
 }
 
 .logo {
@@ -71,13 +73,6 @@ body {
   display: grid;
   grid-template-columns: 1fr 380px;
   gap: 1.5rem;
-}
-
-@media (max-width: 768px) {
-  .checkout-container {
-    grid-template-columns: 1fr; /* Tumpuk 1 kolom di HP */
-    padding: 0 0.8rem;
-  }
 }
 
 .form-section,
@@ -225,7 +220,7 @@ body {
   color: var(--primary-color);
 }
 
-/* MODAL NOTA */
+/* MODAL NOTA RESPONSIF MOBILE */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -245,10 +240,12 @@ body {
 
 .receipt-card {
   background: var(--card-bg);
-  padding: 1.8rem;
+  padding: 1.5rem;
   border-radius: 12px;
   max-width: 440px;
   width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
   text-align: center;
   box-shadow: var(--shadow-hover);
 }
@@ -256,5 +253,11 @@ body {
 @media (max-width: 600px) {
   .checkout-container {
     grid-template-columns: 1fr;
+    padding: 0 0.8rem;
+  }
+
+  .receipt-card {
+    padding: 1.2rem;
+    width: 92%;
   }
 }

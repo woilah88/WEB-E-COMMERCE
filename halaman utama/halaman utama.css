@@ -940,3 +940,98 @@ body.dark-mode textarea {
     font-size: 1.3rem;
   }
 }
+
+/* ==========================================
+   PERBAIKAN LAYOUT MODAL RIWAYAT & ULASAN
+   ========================================== */
+
+/* Batasi ukuran gambar produk di riwayat agar tidak meledak/kebablasan */
+.history-product-img {
+  width: 70px !important;
+  height: 70px !important;
+  max-width: 70px !important;
+  max-height: 70px !important;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.history-product-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+/* Kotak Form Ulasan */
+.review-form-box {
+  margin-top: 0.8rem;
+  background: var(--bg-color);
+  padding: 0.8rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Bikin Textarea Luas & Bagus */
+.review-textarea {
+  width: 100% !important;
+  min-height: 70px;
+  padding: 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  resize: vertical;
+  outline: none;
+  background: var(--card-bg);
+  color: var(--text-dark);
+  font-family: inherit;
+}
+
+.review-textarea:focus {
+  border-color: var(--primary-color);
+}
+
+/* Tombol Upload Foto & Video Modern */
+.review-media-upload {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.upload-btn-label {
+  padding: 0.4rem 0.8rem;
+  background: var(--card-bg);
+  border: 1px dashed var(--primary-color);
+  color: var(--primary-color);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-btn-label:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* Tombol Kirim Ulasan Bagus */
+.submit-review-btn {
+  background-color: var(--accent-green);
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  align-self: flex-start;
+}
+
+.submit-review-btn:hover {
+  background-color: #059669;
+}

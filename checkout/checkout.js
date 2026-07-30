@@ -1,9 +1,5 @@
-// ==========================================
-// LOGIKA CHECKOUT & RINGKASAN PESANAN (checkout.js)
-// ==========================================
-
 document.addEventListener("DOMContentLoaded", () => {
-  // 0. SINKRONISASI DARK MODE DARI HALAMAN UTAMA
+  // AUTO DETECT & APPLY DARK MODE
   function initDarkMode() {
     const isDarkMain = localStorage.getItem("XEMA_DARK_MODE") === "true";
     const isDarkAlt = localStorage.getItem("DARK_MODE_XEMA") === "true";
@@ -15,13 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Jalankan Dark Mode saat pertama kali dibuka
   initDarkMode();
 
-  // 1. Ambil data keranjang dari LocalStorage
   let cart = JSON.parse(localStorage.getItem("CART_XEMASHOP")) || [];
   
-  // Element DOM Form & Ringkasan
   const checkoutItemsContainer = document.getElementById("checkout-items-container");
   const subtotalElement = document.getElementById("checkout-subtotal");
   const shippingCostElement = document.getElementById("checkout-shipping-cost");
@@ -29,13 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const shippingSelect = document.getElementById("shipping-select");
   const checkoutForm = document.getElementById("checkout-form");
   
-  // Element DOM Modal Nota / Invoice
   const invoiceModal = document.getElementById("invoice-modal");
   const invoiceContent = document.getElementById("invoice-content");
   const confirmWaBtn = document.getElementById("confirm-wa-btn");
   const backToHomeBtn = document.getElementById("back-to-home-btn");
 
-  // Helper Format Rupiah
   function formatRupiah(number) {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -44,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }).format(number);
   }
 
-  // 2. Render Ringkasan Pesanan di Samping Form Checkout
   function renderCheckoutSummary() {
     if (!checkoutItemsContainer) return;
     checkoutItemsContainer.innerHTML = "";
@@ -97,12 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (totalPaymentElement) totalPaymentElement.textContent = formatRupiah(grandTotal);
   }
 
-  // Update total saat jasa pengiriman diubah
   if (shippingSelect) {
     shippingSelect.addEventListener("change", renderCheckoutSummary);
   }
 
-  // 3. Proses 'Konfirmasi & Bayar Sekarang'
   if (checkoutForm) {
     checkoutForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -153,7 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }))
       };
 
-      // Simpan ke riwayat transaksi & kosongkan keranjang
       let history = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
       history.unshift(orderData);
       localStorage.setItem("ORDER_HISTORY_XEMA", JSON.stringify(history));
@@ -163,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 4. Menampilkan Pop-Up Nota / Invoice
   function showInvoiceModal(order) {
     if (!invoiceModal || !invoiceContent) return;
 
@@ -240,6 +226,5 @@ document.addEventListener("DOMContentLoaded", () => {
     invoiceModal.classList.add("active");
   }
 
-  // Render ringkasan saat halaman pertama dibuka
   renderCheckoutSummary();
 });

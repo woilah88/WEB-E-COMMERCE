@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesanan Berhasil - XemaShop</title>
+    <!-- Hubungkan ke CSS Utama dan CSS khusus Success Page -->
+    <link rel="stylesheet" href="../halaman utama.css?v=9999">
+    <link rel="stylesheet" href="success.css?v=9999">
+</head>
+<body>
+
+    <main class="container">
+        <div class="success-container">
+            <div class="success-icon">🎉</div>
+            <h2 style="color: var(--accent-green);">Pesanan Berhasil Dibuat!</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Terima kasih telah berbelanja di XemaShop. Berikut adalah rincian pesanan Anda:</p>
+
+            <div class="order-box" id="receipt-content">
+                <!-- Rincian Nota diisi otomatis via success.js -->
+            </div>
+
+            <div class="btn-group">
+                <a id="wa-share-btn" href="#" target="_blank" class="btn-wa">💬 Kirim ke WhatsApp Penjual</a>
+                <a href="../halaman utama/halaman utama.html" class="btn-home">🛍️ Kembali ke Katalog</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="success.js"></script>
+</body>
+</html>

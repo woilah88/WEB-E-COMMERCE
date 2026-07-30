@@ -672,3 +672,137 @@ body.dark-mode textarea {
   color: #ffffff;
   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
 }
+
+/* ==========================================
+   FIX MODAL RIWAYAT PEMBELIAN & ULASAN
+   ========================================== */
+
+/* 1. Atur Kartu Pesanan */
+.history-order-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.history-order-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* 2. Tata Letak Item Produk */
+.history-product-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.history-product-main {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+/* FIX GAMBAR TIDAK ZOOOM / KEPROPONSIOANALAN GAMBAR */
+.history-product-img {
+  width: 75px !important;
+  height: 75px !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
+  flex-shrink: 0 !important;
+  border: 1px solid var(--border-color);
+}
+
+/* 3. Bintang Rating Input */
+.star-rating-input span {
+  font-size: 1.3rem;
+  cursor: pointer;
+  filter: grayscale(100%);
+  transition: transform 0.2s, filter 0.2s;
+  display: inline-block;
+  margin-right: 2px;
+}
+
+.star-rating-input span.active {
+  filter: grayscale(0%);
+}
+
+.star-rating-input span:hover {
+  transform: scale(1.2);
+}
+
+/* 4. Form Ulasan, Textarea, & Media Upload */
+.review-form-box {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.review-textarea {
+  width: 100% !important;
+  min-height: 60px;
+  max-height: 120px;
+  padding: 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  resize: vertical;
+  box-sizing: border-box !important;
+}
+
+.review-media-upload {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.upload-btn-label {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--text-dark);
+  transition: background 0.2s;
+}
+
+.upload-btn-label:hover {
+  background-color: var(--border-color);
+}
+
+.submit-review-btn {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.submit-review-btn:hover {
+  background-color: var(--primary-hover);
+}

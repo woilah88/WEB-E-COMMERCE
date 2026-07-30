@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - XemaShop</title>
     <link rel="stylesheet" href="../halaman utama/halaman-utama.css?v=9999">
-    <link rel="stylesheet" href="checkout.css?v=5555">
+    <link rel="stylesheet" href="checkout.css?v=4444">
 </head>
 <body>
 
@@ -18,41 +18,42 @@
         </a>
     </header>
 
-    <main class="container" style="max-width: 1000px; margin: 2rem auto;">
-        <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--text-dark);">Tujuan Pengiriman</h2>
+    <main class="container">
+        <h2 class="page-title">Tujuan Pengiriman</h2>
 
-        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1.5rem; align-items: start;">
+        <!-- CLASS BARU UNTUK LAYOUT CHECKOUT -->
+        <div class="checkout-grid">
             
             <!-- FORM PENGIRIMAN -->
-            <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow);">
+            <div class="checkout-card">
                 <form id="checkout-form">
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Nama Penerima</label>
-                        <input type="text" id="input-name" placeholder="Masukkan nama lengkap" required style="width: 100%; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                    <div class="form-group">
+                        <label>Nama Penerima</label>
+                        <input type="text" id="input-name" placeholder="Masukkan nama lengkap" required>
                     </div>
 
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Nomor WhatsApp</label>
-                        <input type="tel" id="input-phone" placeholder="Contoh: 085731413109" required style="width: 100%; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                    <div class="form-group">
+                        <label>Nomor WhatsApp</label>
+                        <input type="tel" id="input-phone" placeholder="Contoh: 085731413109" required>
                     </div>
 
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Alamat Pengiriman</label>
-                        <textarea id="input-address" rows="3" placeholder="Jl. Raya No. 123, Kota, Provinsi" required style="width: 100%; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 8px; resize: vertical;"></textarea>
+                    <div class="form-group">
+                        <label>Alamat Pengiriman</label>
+                        <textarea id="input-address" rows="3" placeholder="Jl. Raya No. 123, Kota, Provinsi" required></textarea>
                     </div>
 
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Jasa Pengiriman (Ongkir)</label>
-                        <select id="shipping-select" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--card-bg);">
+                    <div class="form-group">
+                        <label>Jasa Pengiriman (Ongkir)</label>
+                        <select id="shipping-select">
                             <option value="10000">J&T Express (Reguler) - Rp 10.000</option>
                             <option value="15000">JNE Yes (Kilat) - Rp 15.000</option>
                             <option value="20000">SiCepat BEST - Rp 20.000</option>
                         </select>
                     </div>
 
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Metode Pembayaran</label>
-                        <select id="payment-select" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--card-bg);">
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label>Metode Pembayaran</label>
+                        <select id="payment-select">
                             <option value="Transfer Bank (BCA)">Transfer Bank (BCA)</option>
                             <option value="Transfer Bank (Mandiri)">Transfer Bank (Mandiri)</option>
                             <option value="E-Wallet (Gopay/OVO/Dana)">E-Wallet (Gopay/OVO/Dana)</option>
@@ -60,17 +61,16 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="checkout-btn" style="width: 100%; padding: 0.8rem; background-color: var(--accent-green); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                    <button type="submit" class="checkout-btn">
                         Konfirmasi & Bayar Sekarang
                     </button>
                 </form>
             </div>
 
             <!-- RINGKASAN PESANAN -->
-            <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow);">
+            <div class="checkout-card">
                 <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-dark);">Ringkasan Pesanan</h3>
                 
-                <!-- TEMPAT ITEM DITERBITKAN DARI JS -->
                 <div id="checkout-items-container"></div>
 
                 <div style="border-top: 1px solid var(--border-color); padding-top: 0.8rem; margin-top: 0.8rem;">
@@ -107,6 +107,6 @@
         </div>
     </div>
 
-    <script src="checkout.js?v=8888"></script>
+    <script src="checkout.js?v=4444"></script>
 </body>
 </html>

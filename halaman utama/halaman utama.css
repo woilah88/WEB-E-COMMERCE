@@ -622,3 +622,53 @@ body.dark-mode textarea {
 
   .detail-img-wrapper { height: 180px; }
 }
+
+/* ==========================================
+   👟 FIX RAPINYA TOMBOL UKURAN (SIZE SELECTOR)
+   ========================================== */
+.size-selector {
+  margin: 0.8rem 0;
+}
+
+.size-selector label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.size-options {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important; /* Memberikan jarak antar tombol agar tidak berdempetan */
+}
+
+.size-btn {
+  min-width: 40px;
+  height: 36px;
+  padding: 0 0.6rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  color: var(--text-dark);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.size-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.size-btn.active {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}

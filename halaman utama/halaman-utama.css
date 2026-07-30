@@ -933,28 +933,3 @@ body.dark-mode textarea {
   transform: scale(1.05) !important;
 }
 
-@media screen and (max-width: 768px) {
-  main.container > div[style*="display: grid"] {
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-  }
-
-  main.container {
-    padding: 0 0.8rem !important;
-    margin: 1rem auto !important;
-  }
-
-  #checkout-items-container .checkout-item-card,
-  #checkout-items-container > div {
-    gap: 0.5rem !important;
-  }
-
-  h4, span, strong, p {
-    word-break: break-word !important;
-  }
-
-  .checkout-btn {
-    padding: 0.9rem !important;
-    font-size: 0.95rem !important;
-  }
-}

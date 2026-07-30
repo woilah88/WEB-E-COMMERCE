@@ -132,19 +132,44 @@ body.dark-mode textarea {
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.product-cart:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* FIX GAMBAR KATALOG TERPOTONG (DI-FIT DENGAN POSISI CENTER/CONTAIN) */
 .product-image-wrapper {
   position: relative;
   width: 100%;
   height: 200px;
-  background-color: #f1f5f9;
+  background-color: #f8fafc;
+  overflow: hidden;
 }
 
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* Memastikan seluruh gambar terlihat penuh tanpa terpotong atasnya */
+  object-position: center;
+  padding: 0.5rem;
+}
+
+/* FIX BADGE DISKON (CANTIK DENGAN BACKGROUND MERAH) */
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  z-index: 5;
+  box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4);
 }
 
 .wishlist-heart-btn {
@@ -162,10 +187,11 @@ body.dark-mode textarea {
   justify-content: center;
   cursor: pointer;
   z-index: 5;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .product-info {
-  padding: 0.8rem;
+  padding: 0.9rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -175,6 +201,7 @@ body.dark-mode textarea {
   font-size: 0.7rem;
   color: var(--text-muted);
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .product-title {
@@ -194,35 +221,51 @@ body.dark-mode textarea {
   overflow: hidden;
 }
 
+/* FIX TOMBOL KERANJANG DI BAGIAN BOTTOM */
 .product-bottom {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end; /* Memastikan tombol rata bawah dengan harga */
   margin-top: auto;
   gap: 0.5rem;
+}
+
+.product-price-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 38px; /* Mengunci tinggi wadah harga agar tombol tidak ketarik mekar ke atas */
 }
 
 .discount-price {
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--primary-color);
+  line-height: 1.2;
 }
 
 .original-price {
   font-size: 0.75rem;
   color: var(--text-muted);
   text-decoration: line-through; 
+  line-height: 1.2;
 }
 
 .add-to-cart-btn {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 0.4rem 0.8rem;
+  padding: 0.5rem 0.8rem;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.8rem;
+  height: fit-content; /* Mengunci tinggi tombol agar pas proporsional */
+  align-self: flex-end;
+}
+
+.add-to-cart-btn:hover {
+  background-color: var(--primary-hover);
 }
 
 .product-rating {
@@ -298,9 +341,7 @@ body.dark-mode textarea {
 }
 .dot.active { background-color: var(--primary-color); width: 20px; border-radius: 10px; }
 
-/* ==========================================
-   🛒 KERANJANG DRAWER (SEMPURNA & SANGAT KETAT)
-   ========================================== */
+/* 🛒 KERANJANG DRAWER */
 .cart-overlay {
   position: fixed;
   top: 0;
@@ -367,7 +408,6 @@ body.dark-mode textarea {
   margin-top: 2rem;
 }
 
-/* PENGUNCI PENTING: GAMBAR DALAM KERANJANG DIKUNCI MATI */
 .cart-item {
   display: flex;
   align-items: center;
@@ -442,7 +482,7 @@ body.dark-mode textarea {
   cursor: pointer;
 }
 
-/* MODAL GENERAL */
+/* 🔍 MODAL & DETAIL PRODUK */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -457,18 +497,46 @@ body.dark-mode textarea {
   z-index: 1000;
   padding: 1rem;
 }
-.modal-overlay.active { opacity: 1; visibility: visible; }
+
+.modal-overlay.active { 
+  opacity: 1; 
+  visibility: visible; 
+}
 
 .product-detail-card {
   background-color: var(--card-bg);
   border-radius: 16px;
   width: 90%;
-  max-width: 600px;
+  max-width: 650px;
   max-height: 90vh;
   overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
   padding: 1.5rem;
   margin: auto;
+}
+
+.product-detail-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+
+.detail-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #f1f5f9;
+}
+
+.detail-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  display: block;
 }
 
 .floating-wa-btn {
@@ -486,7 +554,6 @@ body.dark-mode textarea {
   z-index: 999;
 }
 
-/* FILTER BUTTONS */
 .filter-btn {
   padding: 0.4rem 0.9rem;
   background-color: var(--card-bg);
@@ -504,9 +571,7 @@ body.dark-mode textarea {
   border-color: var(--primary-color);
 }
 
-/* ==========================================
-   📱 ATURAN KHUSUS MOBILE / HP
-   ========================================== */
+/* 📱 ATURAN KHUSUS MOBILE / HP */
 @media screen and (max-width: 650px) {
   .navbar {
     flex-wrap: wrap;
@@ -526,13 +591,8 @@ body.dark-mode textarea {
     min-height: 110px;
   }
 
-  .banner-content h2 {
-    font-size: 0.95rem;
-  }
-
-  .banner-content p {
-    font-size: 0.75rem;
-  }
+  .banner-content h2 { font-size: 0.95rem; }
+  .banner-content p { font-size: 0.75rem; }
 
   .prev-slide { left: 0.5rem; }
   .next-slide { right: 0.5rem; }
@@ -542,9 +602,7 @@ body.dark-mode textarea {
     gap: 0.8rem;
   }
 
-  .product-image-wrapper {
-    height: 140px;
-  }
+  .product-image-wrapper { height: 140px; }
 
   .add-to-cart-btn {
     width: 100%;
@@ -556,4 +614,11 @@ body.dark-mode textarea {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .product-detail-body {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .detail-img-wrapper { height: 180px; }
 }

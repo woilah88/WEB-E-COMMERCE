@@ -932,3 +932,38 @@ body.dark-mode textarea {
   border-color: #ef4444 !important;
   transform: scale(1.05) !important;
 }
+
+/* ==========================================
+   PERBAIKAN TAMPILAN RESPONSIVE UNTUK HP
+   ========================================== */
+
+@media screen and (max-width: 768px) {
+  /* 1. Ubah Layout Grid Kanan-Kiri Jadi Tumpuk Atas-Bawah */
+  main.container > div[style*="display: grid"] {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* 2. Bikin Padding Container Lebih Pas di HP */
+  main.container {
+    padding: 0 0.8rem !important;
+    margin: 1rem auto !important;
+  }
+
+  /* 3. Rapikan Teks & Harga Ringkasan Pesanan */
+  #checkout-items-container .checkout-item-card,
+  #checkout-items-container > div {
+    gap: 0.5rem !important;
+  }
+
+  /* 4. Pastikan Teks Harga & Nama Produk Tidak Terpotong */
+  h4, span, strong, p {
+    word-break: break-word !important;
+  }
+
+  /* 5. Tombol Konfirmasi Bikin Lebar Penuh & Jelas */
+  .checkout-btn {
+    padding: 0.9rem !important;
+    font-size: 0.95rem !important;
+  }
+}

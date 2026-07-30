@@ -184,11 +184,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const sellerPhone = "6285124164662";
     let textWA = `Halo XemaShop! Saya mau konfirmasi pesanan baru:\n\n` +
-                 `📌 *ID Pesanan:* ${order.orderId}\n` +
-                 `👤 *Nama:* ${order.customerName}\n` +
-                 `📱 *No WA:* ${order.customerPhone}\n` +
-                 `📍 *Alamat:* ${order.address}\n\n` +
-                 `🛒 *Pesanan:*\n`;
+                 `*ID Pesanan:* ${order.orderId}\n` +
+                 `*Nama:* ${order.customerName}\n` +
+                 `*No WA:* ${order.customerPhone}\n` +
+                 `*Alamat:* ${order.address}\n\n` +
+                 `*Pesanan:*\n`;
 
     order.items.forEach(i => {
       textWA += `- ${i.name} (${i.quantity}x)\n`;

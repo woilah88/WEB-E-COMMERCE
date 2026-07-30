@@ -1,12 +1,6 @@
-// ==========================================
-// LOGIKA CHECKOUT & SIMPAN RIWAYAT TRANSAKSI (checkout.js)
-// ==========================================
-
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Ambil data keranjang dari LocalStorage
   let cart = JSON.parse(localStorage.getItem("CART_XEMASHOP")) || [];
   
-  // Element DOM Form & Ringkasan
   const checkoutItemsContainer = document.getElementById("checkout-items-container");
   const subtotalElement = document.getElementById("checkout-subtotal");
   const shippingCostElement = document.getElementById("checkout-shipping-cost");
@@ -14,20 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const shippingSelect = document.getElementById("shipping-select");
   const checkoutForm = document.getElementById("checkout-form");
   
-  // Element DOM Modal Nota / Invoice
   const invoiceModal = document.getElementById("invoice-modal");
   const invoiceContent = document.getElementById("invoice-content");
   const confirmWaBtn = document.getElementById("confirm-wa-btn");
   const backToHomeBtn = document.getElementById("back-to-home-btn");
 
-  // Jika keranjang kosong dan mencoba buka checkout, balikkan ke katalog
-  if (cart.length === 0 && !invoiceModal?.classList.contains("active")) {
-    alert("Keranjang belanja kamu masih kosong!");
-    window.location.href = "../halaman utama/halaman utama.html";
-    return;
-  }
-
-  // Helper Format Rupiah
   function formatRupiah(number) {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -36,10 +21,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }).format(number);
   }
 
-  // 2. Render Ringkasan Pesanan di Samping Form
   function renderCheckoutSummary() {
     if (!checkoutItemsContainer) return;
     checkoutItemsContainer.innerHTML = "";
+
+    if (cart.length === 0) {
+      checkoutItemsContainer.innerHTML = `
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 1rem 0;">
+          Keranjang kamu masih kosong.<br>
+          <a href="../halaman utama/halaman utama.html" style="color: var(--primary-color); font-weight: bold; margin-top: 0.5rem; display: inline-block;">
+            Kembali Belanja
+          </a>
+        </p>
+      `;
+      if (subtotalElement) subtotalElement.textContent = "Rp 0";
+      if (shippingCostElement) shippingCostElement.textContent = "Rp 0";
+      if (totalPaymentElement) totalPaymentElement.textContent = "Rp 0";
+      return;
+    }
 
     let subtotal = 0;
 
@@ -47,14 +46,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const itemTotal = item.price * item.quantity;
       subtotal += itemTotal;
 
+      let imageSrc = item.image || "";
+      if (imageSrc && !imageSrc.startsWith("http") && !imageSrc.startsWith("../")) {
+        imageSrc = "../" + imageSrc;
+      }
+
       const itemDiv = document.createElement("div");
-      itemDiv.classList.add("checkout-item-card");
-      itemDiv.style.cssText = "display: flex; gap: 0.8rem; align-items: center; margin-bottom: 0.8rem;";
+      itemDiv.style.cssText = "display: flex; gap: 0.8rem; align-items: center; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border-color);";
       
       itemDiv.innerHTML = `
-        <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+        <img src="${imageSrc}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); flex-shrink: 0;">
         <div style="flex-grow: 1;">
-          <h4 style="font-size: 0.85rem; margin-bottom: 0.2rem;">${item.name}</h4>
+          <h4 style="font-size: 0.85rem; margin-bottom: 0.2rem; color: var(--text-dark);">${item.name}</h4>
           <p style="font-size: 0.75rem; color: var(--text-muted);">${item.quantity} x ${formatRupiah(item.price)}</p>
         </div>
         <strong style="font-size: 0.85rem; color: var(--primary-color);">${formatRupiah(itemTotal)}</strong>
@@ -70,17 +73,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (totalPaymentElement) totalPaymentElement.textContent = formatRupiah(grandTotal);
   }
 
-  // Update total saat jasa pengiriman diubah
   if (shippingSelect) {
     shippingSelect.addEventListener("change", renderCheckoutSummary);
   }
 
-  // 3. Proses 'Konfirmasi & Bayar Sekarang'
   if (checkoutForm) {
     checkoutForm.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      // Ambil nilai dari inputan
+      if (cart.length === 0) {
+        alert("Keranjang kamu kosong!");
+        return;
+      }
+
       const name = document.getElementById("input-name").value.trim();
       const phone = document.getElementById("input-phone").value.trim();
       const address = document.getElementById("input-address").value.trim();
@@ -91,7 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
       let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       let totalAmount = subtotal + shippingCost;
 
-      // Buat ID Pesanan Acak (contoh: XEMA-463926)
       const orderId = "XEMA-" + Math.floor(100000 + Math.random() * 900000);
       const todayDate = new Date().toLocaleDateString("id-ID", {
         day: 'numeric',
@@ -99,7 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
         year: 'numeric'
       });
 
-      // Bikin objek data pesanan
       const orderData = {
         orderId: orderId,
         date: todayDate,
@@ -124,20 +127,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }))
       };
 
-      // A. SIMPAN KE RIWAYAT TRANSAKSI (ORDER_HISTORY_XEMA)
       let history = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
-      history.unshift(orderData); // Taruh pesanan paling baru di atas
+      history.unshift(orderData);
       localStorage.setItem("ORDER_HISTORY_XEMA", JSON.stringify(history));
-
-      // B. KOSONGKAN KERANJANG
       localStorage.removeItem("CART_XEMASHOP");
 
-      // C. TAMPILKAN POP-UP NOTA / INVOICE
       showInvoiceModal(orderData);
     });
   }
 
-  // 4. Fungsi Menampilkan Pop-Up Nota
   function showInvoiceModal(order) {
     if (!invoiceModal || !invoiceContent) return;
 
@@ -183,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // Format pesan WhatsApp
     const sellerPhone = "6285124164662";
     let textWA = `Halo XemaShop! Saya mau konfirmasi pesanan baru:\n\n` +
                  `📌 *ID Pesanan:* ${order.orderId}\n` +
@@ -215,6 +212,5 @@ document.addEventListener("DOMContentLoaded", () => {
     invoiceModal.classList.add("active");
   }
 
-  // Jalankan render awal saat halaman checkout terbuka
   renderCheckoutSummary();
 });

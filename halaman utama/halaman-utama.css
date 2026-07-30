@@ -833,3 +833,102 @@ body.dark-mode textarea {
 
   .detail-img-wrapper { height: 180px; }
 }
+
+/* ==========================================
+   FIX PERFECT WISHLIST ITEM & TOMBOL HAPUS
+   ========================================== */
+
+/* 1. Layout Kartu Wishlist (Flexbox Rata Tengah) */
+.wishlist-item-card {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1rem !important;
+  padding: 0.8rem 1rem !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  margin-bottom: 0.8rem !important;
+  background-color: var(--card-bg) !important;
+}
+
+/* 2. Gambar Produk di Kiri */
+.wishlist-item-card img,
+#wishlist-modal img {
+  width: 60px !important;
+  height: 60px !important;
+  object-fit: contain !important;
+  border-radius: 8px !important;
+  background-color: #f8fafc !important;
+  border: 1px solid var(--border-color) !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+}
+
+/* 3. Detail Teks di Tengah */
+.wishlist-item-info {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.wishlist-item-info h4 {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: var(--text-dark) !important;
+  margin-bottom: 0.2rem !important;
+}
+
+.wishlist-item-info p {
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: var(--primary-color) !important;
+  margin: 0 !important;
+}
+
+/* 4. Aksi Kanan (Barisan Tombol Sejajar & Simetris) */
+.wishlist-item-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  flex-shrink: 0 !important;
+}
+
+/* Tombol Keranjang */
+.wishlist-item-actions .add-to-cart-btn {
+  height: 38px !important;
+  padding: 0 1rem !important;
+  font-size: 0.8rem !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
+
+/* Tombol Hapus (Sampah) Merah */
+.remove-wishlist-btn,
+.wishlist-item-actions button:last-child {
+  width: 38px !important;
+  height: 38px !important;
+  background-color: #fee2e2 !important;
+  color: #ef4444 !important;
+  border: 1px solid #fca5a5 !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1rem !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+.remove-wishlist-btn:hover,
+.wishlist-item-actions button:last-child:hover {
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+  border-color: #ef4444 !important;
+  transform: scale(1.05) !important;
+}

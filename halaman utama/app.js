@@ -168,7 +168,7 @@ if (sortSelect) {
 }
 
 // ==========================================
-// B. LOGIKA WISHLIST / FAVORIT PRODUK
+// B. LOGIKA WISHLIST / FAVORIT PRODUK (FIXED ACCORDING TO HTML UI)
 // ==========================================
 
 function toggleWishlist(event, productId) {
@@ -207,12 +207,14 @@ function updateWishlistUI() {
     itemDiv.classList.add("wishlist-item-card");
     itemDiv.innerHTML = `
       <img src="${product.image}" alt="${product.name}" class="wishlist-item-img">
-      <div style="flex-grow: 1;">
-        <h4 style="font-size: 0.95rem;">${product.name}</h4>
-        <p style="color: var(--primary-color); font-weight: bold; font-size: 0.9rem;">${formatRupiah(product.price)}</p>
+      <div class="wishlist-item-info">
+        <h4>${product.name}</h4>
+        <p>${formatRupiah(product.price)}</p>
       </div>
-      <button class="add-to-cart-btn" style="padding: 0.4rem 0.7rem;" onclick="addToCart(${product.id})">+ Keranjang</button>
-      <button style="background: none; border: none; font-size: 1.2rem; cursor: pointer;" onclick="toggleWishlist(null, ${product.id})">🗑️</button>
+      <div class="wishlist-item-actions">
+        <button class="add-to-cart-btn" onclick="addToCart(${product.id})">+ Keranjang</button>
+        <button class="remove-wishlist-btn" onclick="toggleWishlist(null, ${product.id})" title="Hapus dari Favorit">🗑️</button>
+      </div>
     `;
     wishlistItemsContainer.appendChild(itemDiv);
   });
@@ -726,4 +728,4 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCart();
   updateWishlistUI();
   showSlides(0);
-});
+})

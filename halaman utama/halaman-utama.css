@@ -140,7 +140,6 @@ body.dark-mode textarea {
   box-shadow: var(--shadow-hover);
 }
 
-/* FIX GAMBAR KATALOG TERPOTONG (DI-FIT DENGAN POSISI CENTER/CONTAIN) */
 .product-image-wrapper {
   position: relative;
   width: 100%;
@@ -152,12 +151,11 @@ body.dark-mode textarea {
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Memastikan seluruh gambar terlihat penuh tanpa terpotong atasnya */
+  object-fit: contain;
   object-position: center;
   padding: 0.5rem;
 }
 
-/* FIX BADGE DISKON (CANTIK DENGAN BACKGROUND MERAH) */
 .discount-badge {
   position: absolute;
   top: 10px;
@@ -221,11 +219,10 @@ body.dark-mode textarea {
   overflow: hidden;
 }
 
-/* FIX TOMBOL KERANJANG DI BAGIAN BOTTOM */
 .product-bottom {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end; /* Memastikan tombol rata bawah dengan harga */
+  align-items: flex-end;
   margin-top: auto;
   gap: 0.5rem;
 }
@@ -234,7 +231,7 @@ body.dark-mode textarea {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  min-height: 38px; /* Mengunci tinggi wadah harga agar tombol tidak ketarik mekar ke atas */
+  min-height: 38px;
 }
 
 .discount-price {
@@ -260,7 +257,7 @@ body.dark-mode textarea {
   cursor: pointer;
   font-weight: 600;
   font-size: 0.8rem;
-  height: fit-content; /* Mengunci tinggi tombol agar pas proporsional */
+  height: fit-content;
   align-self: flex-end;
 }
 
@@ -341,7 +338,7 @@ body.dark-mode textarea {
 }
 .dot.active { background-color: var(--primary-color); width: 20px; border-radius: 10px; }
 
-/* 🛒 KERANJANG DRAWER */
+/* KERANJANG DRAWER */
 .cart-overlay {
   position: fixed;
   top: 0;
@@ -482,7 +479,7 @@ body.dark-mode textarea {
   cursor: pointer;
 }
 
-/* 🔍 MODAL & DETAIL PRODUK */
+/* MODAL & DETAIL PRODUK */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -571,61 +568,7 @@ body.dark-mode textarea {
   border-color: var(--primary-color);
 }
 
-/* 📱 ATURAN KHUSUS MOBILE / HP */
-@media screen and (max-width: 650px) {
-  .navbar {
-    flex-wrap: wrap;
-    padding: 0.6rem 0.8rem;
-  }
-
-  .search-box {
-    order: 3;
-    width: 100%;
-    flex: 1 0 100%;
-    max-width: 100%;
-    margin-top: 0.3rem;
-  }
-
-  .banner-content {
-    padding: 1.2rem 2rem;
-    min-height: 110px;
-  }
-
-  .banner-content h2 { font-size: 0.95rem; }
-  .banner-content p { font-size: 0.75rem; }
-
-  .prev-slide { left: 0.5rem; }
-  .next-slide { right: 0.5rem; }
-
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.8rem;
-  }
-
-  .product-image-wrapper { height: 140px; }
-
-  .add-to-cart-btn {
-    width: 100%;
-    font-size: 0.75rem;
-    padding: 0.4rem;
-  }
-
-  .product-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .product-detail-body {
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
-  }
-
-  .detail-img-wrapper { height: 180px; }
-}
-
-/* ==========================================
-   👟 FIX RAPINYA TOMBOL UKURAN (SIZE SELECTOR)
-   ========================================== */
+/* TOMBOL UKURAN (SIZE SELECTOR) */
 .size-selector {
   margin: 0.8rem 0;
 }
@@ -641,7 +584,7 @@ body.dark-mode textarea {
 .size-options {
   display: flex !important;
   flex-wrap: wrap !important;
-  gap: 0.5rem !important; /* Memberikan jarak antar tombol agar tidak berdempetan */
+  gap: 0.5rem !important;
 }
 
 .size-btn {
@@ -673,11 +616,7 @@ body.dark-mode textarea {
   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
 }
 
-/* ==========================================
-   FIX MODAL RIWAYAT PEMBELIAN & ULASAN
-   ========================================== */
-
-/* 1. Atur Kartu Pesanan */
+/* MODAL RIWAYAT PEMBELIAN & ULASAN (PERBAIKAN TOTAL) */
 .history-order-card {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -697,7 +636,6 @@ body.dark-mode textarea {
   color: var(--text-muted);
 }
 
-/* 2. Tata Letak Item Produk */
 .history-product-item {
   display: flex;
   flex-direction: column;
@@ -711,17 +649,17 @@ body.dark-mode textarea {
   align-items: flex-start;
 }
 
-/* FIX GAMBAR TIDAK ZOOOM / KEPROPONSIOANALAN GAMBAR */
 .history-product-img {
   width: 75px !important;
   height: 75px !important;
+  max-width: 75px !important;
+  max-height: 75px !important;
   object-fit: cover !important;
   border-radius: 8px !important;
   flex-shrink: 0 !important;
   border: 1px solid var(--border-color);
 }
 
-/* 3. Bintang Rating Input */
 .star-rating-input span {
   font-size: 1.3rem;
   cursor: pointer;
@@ -739,7 +677,6 @@ body.dark-mode textarea {
   transform: scale(1.2);
 }
 
-/* 4. Form Ulasan, Textarea, & Media Upload */
 .review-form-box {
   background: var(--bg-color);
   border: 1px solid var(--border-color);
@@ -805,4 +742,56 @@ body.dark-mode textarea {
 
 .submit-review-btn:hover {
   background-color: var(--primary-hover);
+}
+
+/* MEDIA QUERY HP */
+@media screen and (max-width: 650px) {
+  .navbar {
+    flex-wrap: wrap;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .search-box {
+    order: 3;
+    width: 100%;
+    flex: 1 0 100%;
+    max-width: 100%;
+    margin-top: 0.3rem;
+  }
+
+  .banner-content {
+    padding: 1.2rem 2rem;
+    min-height: 110px;
+  }
+
+  .banner-content h2 { font-size: 0.95rem; }
+  .banner-content p { font-size: 0.75rem; }
+
+  .prev-slide { left: 0.5rem; }
+  .next-slide { right: 0.5rem; }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .product-image-wrapper { height: 140px; }
+
+  .add-to-cart-btn {
+    width: 100%;
+    font-size: 0.75rem;
+    padding: 0.4rem;
+  }
+
+  .product-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .product-detail-body {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .detail-img-wrapper { height: 180px; }
 }

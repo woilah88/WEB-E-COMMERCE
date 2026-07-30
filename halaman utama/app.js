@@ -2,7 +2,6 @@
 // LOGIKA UTAMA: KATALOG, RATING, WISHLIST, RIWAYAT, DARK MODE, & KERANJANG (app.js)
 // ==========================================
 
-// 1. Data LocalStorage
 let cart = JSON.parse(localStorage.getItem("CART_XEMASHOP")) || [];
 let wishlist = JSON.parse(localStorage.getItem("WISHLIST_XEMASHOP")) || [];
 
@@ -83,7 +82,6 @@ function renderProducts() {
     return;
   }
 
-  // Hitung statistik rating secara DINAMIS dari ORDER_HISTORY_XEMA
   const orderHistory = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
   const ratingsMap = {};
 
@@ -145,7 +143,6 @@ function renderProducts() {
   });
 }
 
-// Event Listeners Search, Filter, & Sorting
 if (searchInput) {
   searchInput.addEventListener("input", (e) => {
     currentSearchQuery = e.target.value.trim();
@@ -235,7 +232,7 @@ if (closeWishlistBtn) {
 }
 
 // ==========================================
-// C. LOGIKA RIWAYAT PEMBELIAN & FORM RATING FOTO/VIDEO/KOMENTAR
+// C. LOGIKA RIWAYAT PEMBELIAN & FORM RATING (FIXED REVISED)
 // ==========================================
 
 function renderHistory() {
@@ -266,11 +263,11 @@ function renderHistory() {
           <div class="history-product-main">
             <img src="${item.image}" alt="${item.name}" class="history-product-img">
             <div style="flex-grow: 1;">
-              <h4 style="font-size: 0.9rem; color: var(--text-dark);">${item.name} (${item.quantity}x)</h4>
-              <p style="font-size: 0.8rem; color: var(--primary-color); font-weight: bold;">${formatRupiah(item.price)}</p>
+              <h4 style="font-size: 0.9rem; color: var(--text-dark); margin-bottom: 0.2rem;">${item.name} (${item.quantity}x)</h4>
+              <p style="font-size: 0.8rem; color: var(--primary-color); font-weight: bold; margin-bottom: 0.4rem;">${formatRupiah(item.price)}</p>
               
-              <div style="margin-top: 0.2rem;">
-                <span style="font-size: 0.75rem; color: var(--text-muted);">
+              <div>
+                <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">
                   ${item.userRating ? `Bintang Kamu: ${item.userRating}/5` : 'Pilih Bintang:'}
                 </span>
                 <div class="star-rating-input">
@@ -582,7 +579,7 @@ function currentSlide(index) {
 }
 
 // ==========================================
-// G. MODAL DETAIL PRODUK + SECTION ULASAN PEMBELI (FIX SIZE BUTTONS)
+// G. MODAL DETAIL PRODUK + SECTION ULASAN PEMBELI
 // ==========================================
 function openProductDetail(productId) {
   const id = Number(productId);
@@ -605,12 +602,10 @@ function openProductDetail(productId) {
     sizesList = ["All Size"];
   }
 
-  // DIBIKIN TOMBOL DENGAN CLASS SIZE-BTN & DIBUNGKUS WADAH SIZE-OPTIONS
   const sizeButtonsHTML = sizesList
     .map((size, index) => `<button type="button" class="size-btn ${index === 0 ? 'active' : ''}">${size}</button>`)
     .join("");
 
-  // Hitung ulang dinamis ulasan
   const orderHistory = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
   let totalStars = 0;
   let count = 0;
@@ -669,7 +664,6 @@ function openProductDetail(productId) {
     </div>
   `;
 
-  // Render Daftar Komentar + Foto + Video di Modal
   if (productReviewsContainer) {
     productReviewsContainer.innerHTML = "";
     if (reviewsList.length === 0) {

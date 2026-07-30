@@ -280,9 +280,8 @@ function renderHistory() {
             </div>
           </div>
 
-          <!-- FORM ULASAN KOMPLIT SHOPEE (KOMENTAR, FOTO, VIDEO) -->
           <div class="review-form-box">
-            <textarea id="comment-${orderIndex}-${itemIndex}" class="review-textarea" placeholder="Tulis ulasan produk disini... (contoh: Bahannya bagus banget, respon cepat!)">${item.userComment || ''}</textarea>
+            <textarea id="comment-${orderIndex}-${itemIndex}" class="review-textarea" placeholder="Tulis ulasan produk disini...">${item.userComment || ''}</textarea>
             
             <div class="review-media-upload">
               <label class="upload-btn-label">
@@ -583,7 +582,7 @@ function currentSlide(index) {
 }
 
 // ==========================================
-// G. MODAL DETAIL PRODUK + SECTION ULASAN PEMBELI (SHOPEE STYLE)
+// G. MODAL DETAIL PRODUK + SECTION ULASAN PEMBELI (FIX SIZE BUTTONS)
 // ==========================================
 function openProductDetail(productId) {
   const id = Number(productId);
@@ -606,6 +605,7 @@ function openProductDetail(productId) {
     sizesList = ["All Size"];
   }
 
+  // DIBIKIN TOMBOL DENGAN CLASS SIZE-BTN & DIBUNGKUS WADAH SIZE-OPTIONS
   const sizeButtonsHTML = sizesList
     .map((size, index) => `<button type="button" class="size-btn ${index === 0 ? 'active' : ''}">${size}</button>`)
     .join("");
@@ -663,7 +663,7 @@ function openProductDetail(productId) {
         </div>
       </div>
 
-      <button class="add-to-cart-btn" style="width: 100%; margin-top: 0.5rem; padding: 0.7rem;" onclick="addToCart(${product.id}); closeProductDetail();">
+      <button class="add-to-cart-btn" style="width: 100%; margin-top: 0.8rem; padding: 0.7rem;" onclick="addToCart(${product.id}); closeProductDetail();">
         + Masukkan ke Keranjang
       </button>
     </div>

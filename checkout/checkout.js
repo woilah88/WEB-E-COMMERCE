@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // SAMAKAN NAMA KUNCI LOCALSTORAGE DENGAN APP.JS
   let cart = JSON.parse(localStorage.getItem("CART_XEMASHOP")) || [];
   
   const checkoutItemsContainer = document.getElementById("checkout-items-container");
@@ -130,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let history = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
       history.unshift(orderData);
       localStorage.setItem("ORDER_HISTORY_XEMA", JSON.stringify(history));
-      localStorage.removeItem("CART_XEMASHOP");
+      localStorage.removeItem("CART_XEMASHOP"); // DIBERSIHKAN PAS TRANSAKSI SELESAI
 
       showInvoiceModal(orderData);
     });

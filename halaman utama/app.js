@@ -1,5 +1,5 @@
 // ==========================================
-// LOGIKA UTAMA: KATALOG, RATING, WISHLIST, RIWAYAT, DARK MODE, & KERANJANG (app.js)
+// LOGIKA UTAMA: KATALOG, RATING, WISHLIST, RIWAYAT, DARK MODE, KERANJANG, & NAVIGASI BACK (app.js)
 // ==========================================
 
 let cart = JSON.parse(localStorage.getItem("CART_XEMASHOP")) || [];
@@ -168,7 +168,7 @@ if (sortSelect) {
 }
 
 // ==========================================
-// B. LOGIKA WISHLIST / FAVORIT PRODUK (FIXED ACCORDING TO HTML UI)
+// B. LOGIKA WISHLIST / FAVORIT PRODUK
 // ==========================================
 
 function toggleWishlist(event, productId) {
@@ -234,7 +234,7 @@ if (closeWishlistBtn) {
 }
 
 // ==========================================
-// C. LOGIKA RIWAYAT PEMBELIAN & FORM RATING (FIXED REVISED)
+// C. LOGIKA RIWAYAT PEMBELIAN & FORM RATING
 // ==========================================
 
 function renderHistory() {
@@ -401,7 +401,7 @@ if (closeHistoryBtn) {
 // ==========================================
 
 function initDarkMode() {
-  const isDarkMode = localStorage.getItem("DARK_MODE_XEMA") === "true";
+  const isDarkMode = localStorage.getItem("DARK_MODE_XEMA") === "true" || localStorage.getItem("XEMA_DARK_MODE") === "true";
   
   if (isDarkMode) {
     document.body.classList.add("dark-mode");
@@ -418,6 +418,7 @@ if (darkModeToggle) {
     const activeDark = document.body.classList.contains("dark-mode");
     
     localStorage.setItem("DARK_MODE_XEMA", activeDark);
+    localStorage.setItem("XEMA_DARK_MODE", activeDark);
     darkModeToggle.textContent = activeDark ? "☀️" : "🌙";
   });
 }
@@ -720,6 +721,95 @@ if (detailModal) {
 }
 
 // ==========================================
+// H. FITUR BACK BUTTON NAVIGASI (HANDLING MODAL VIA TOMBOL BACK)
+// ==========================================
+
+function pushModalState(modalName) {
+  history.pushState({ modalOpen: true, modalName: modalName }, "");
+}
+
+function closeAllModalsDirectly() {
+  if (detailModal) detailModal.classList.remove("active");
+  if (wishlistModal) wishlistModal.classList.remove("active");
+  if (historyModal) historyModal.classList.remove("active");
+  if (cartDrawer && cartOverlay) {
+    cartDrawer.classList.remove("active");
+    cartOverlay.classList.remove("active");
+  }
+}
+
+// Hooking fungsi buka modal agar mencatat state ke History
+const originalOpenProductDetail = openProductDetail;
+openProductDetail = function(productId) {
+  originalOpenProductDetail(productId);
+  pushModalState("detail");
+};
+
+const originalOpenCartDrawer = openCartDrawer;
+openCartDrawer = function() {
+  originalOpenCartDrawer();
+  pushModalState("cart");
+};
+
+if (wishlistBtn) {
+  wishlistBtn.addEventListener("click", () => {
+    pushModalState("wishlist");
+  });
+}
+
+if (historyBtn) {
+  historyBtn.addEventListener("click", () => {
+    pushModalState("history");
+  });
+}
+
+// Event Listener saat Tombol Back HP / Browser Ditekan (Popstate)
+window.addEventListener("popstate", (e) => {
+  const isAnyModalActive = 
+    (detailModal && detailModal.classList.contains("active")) ||
+    (wishlistModal && wishlistModal.classList.contains("active")) ||
+    (historyModal && historyModal.classList.contains("active")) ||
+    (cartDrawer && cartDrawer.classList.contains("active"));
+
+  if (isAnyModalActive) {
+    closeAllModalsDirectly();
+  }
+});
+
+// Jika pengguna menutup modal lewat tombol X manual, rapikan History State
+function syncCloseWithHistory() {
+  const isAnyModalActive = 
+    (detailModal && detailModal.classList.contains("active")) ||
+    (wishlistModal && wishlistModal.classList.contains("active")) ||
+    (historyModal && historyModal.classList.contains("active")) ||
+    (cartDrawer && cartDrawer.classList.contains("active"));
+
+  if (!isAnyModalActive && window.history.state && window.history.state.modalOpen) {
+    window.history.back();
+  }
+}
+
+const originalCloseProductDetail = closeProductDetail;
+closeProductDetail = function() {
+  originalCloseProductDetail();
+  syncCloseWithHistory();
+};
+
+const originalCloseCartDrawer = closeCartDrawer;
+closeCartDrawer = function() {
+  originalCloseCartDrawer();
+  syncCloseWithHistory();
+};
+
+if (closeWishlistBtn) {
+  closeWishlistBtn.addEventListener("click", syncCloseWithHistory);
+}
+
+if (closeHistoryBtn) {
+  closeHistoryBtn.addEventListener("click", syncCloseWithHistory);
+}
+
+// ==========================================
 // INISIALISASI HALAMAN
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
@@ -728,4 +818,4 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCart();
   updateWishlistUI();
   showSlides(0);
-})
+});

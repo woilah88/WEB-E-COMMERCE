@@ -1,5 +1,5 @@
 // ==========================================
-// LOGIKA UTAMA: KATALOG, RATING, WISHLIST, RIWAYAT, DARK MODE, KERANJANG, & NAVIGASI BACK (app.js)
+// LOGIKA UTAMA: KATALOG, RATING, WISHLIST, RIWAYAT, DARK MODE, KERANJANG, & NAVIGASI BACK HP (app.js)
 // ==========================================
 
 let cart = JSON.parse(localStorage.getItem("CART_XEMASHOP")) || [];
@@ -57,7 +57,58 @@ function formatRupiah(number) {
 }
 
 // ==========================================
-// A. RENDER PRODUK, FILTER, & SORTING
+// A. MEKANISME NAVIGASI BACK HP (URL HASH GUARD)
+// ==========================================
+
+// Fungsi Buka Modal + Tambah Hash `#popup` ke URL
+function showModal(modalElement, overlayElement = null) {
+  if (!modalElement) return;
+  modalElement.classList.add("active");
+  if (overlayElement) overlayElement.classList.add("active");
+
+  // Jika URL belum ber-hash, tambahkan hash #popup
+  if (window.location.hash !== "#popup") {
+    window.location.hash = "popup";
+  }
+}
+
+// Fungsi Tutup Semua Modal Secara Fisik
+function hideAllModals() {
+  if (detailModal) detailModal.classList.remove("active");
+  if (wishlistModal) wishlistModal.classList.remove("active");
+  if (historyModal) historyModal.classList.remove("active");
+  if (cartDrawer) cartDrawer.classList.remove("active");
+  if (cartOverlay) cartOverlay.classList.remove("active");
+}
+
+// Fungsi Tutup Modal lewat Tombol X Manual
+function closeModalManual(modalElement, overlayElement = null) {
+  if (!modalElement) return;
+  
+  hideAllModals();
+
+  // Jika masih ada hash #popup di URL, mundurkan history browser
+  if (window.location.hash === "#popup") {
+    history.back();
+  }
+}
+
+// DENGARKAN TOMBOL BACK HP (PERUBAHAN HASH/POPSTATE)
+window.addEventListener("hashchange", () => {
+  // Jika hash '#popup' hilang (karena user memencet Back di HP), TUTUP MODAL!
+  if (window.location.hash !== "#popup") {
+    hideAllModals();
+  }
+});
+
+window.addEventListener("popstate", () => {
+  if (window.location.hash !== "#popup") {
+    hideAllModals();
+  }
+});
+
+// ==========================================
+// B. RENDER PRODUK, FILTER, & SORTING
 // ==========================================
 
 function renderProducts() {
@@ -168,7 +219,7 @@ if (sortSelect) {
 }
 
 // ==========================================
-// B. LOGIKA WISHLIST / FAVORIT PRODUK
+// C. LOGIKA WISHLIST / FAVORIT PRODUK
 // ==========================================
 
 function toggleWishlist(event, productId) {
@@ -223,18 +274,18 @@ function updateWishlistUI() {
 if (wishlistBtn) {
   wishlistBtn.addEventListener("click", () => {
     updateWishlistUI();
-    if (wishlistModal) wishlistModal.classList.add("active");
+    showModal(wishlistModal);
   });
 }
 
 if (closeWishlistBtn) {
   closeWishlistBtn.addEventListener("click", () => {
-    if (wishlistModal) wishlistModal.classList.remove("active");
+    closeModalManual(wishlistModal);
   });
 }
 
 // ==========================================
-// C. LOGIKA RIWAYAT PEMBELIAN & FORM RATING
+// D. LOGIKA RIWAYAT PEMBELIAN & FORM RATING
 // ==========================================
 
 function renderHistory() {
@@ -386,18 +437,18 @@ function saveFullReview(orderIndex, itemIndex, productId) {
 if (historyBtn) {
   historyBtn.addEventListener("click", () => {
     renderHistory();
-    if (historyModal) historyModal.classList.add("active");
+    showModal(historyModal);
   });
 }
 
 if (closeHistoryBtn) {
   closeHistoryBtn.addEventListener("click", () => {
-    if (historyModal) historyModal.classList.remove("active");
+    closeModalManual(historyModal);
   });
 }
 
 // ==========================================
-// D. LOGIKA DARK MODE TOGGLE
+// E. LOGIKA DARK MODE TOGGLE
 // ==========================================
 
 function initDarkMode() {
@@ -424,7 +475,7 @@ if (darkModeToggle) {
 }
 
 // ==========================================
-// E. MANAJEMEN KERANJANG BELANJA
+// F. MANAJEMEN KERANJANG BELANJA
 // ==========================================
 
 function addToCart(productId) {
@@ -515,17 +566,11 @@ function removeFromCart(productId) {
 }
 
 function openCartDrawer() {
-  if (cartDrawer && cartOverlay) {
-    cartDrawer.classList.add("active");
-    cartOverlay.classList.add("active");
-  }
+  showModal(cartDrawer, cartOverlay);
 }
 
 function closeCartDrawer() {
-  if (cartDrawer && cartOverlay) {
-    cartDrawer.classList.remove("active");
-    cartOverlay.classList.remove("active");
-  }
+  closeModalManual(cartDrawer, cartOverlay);
 }
 
 if (cartBtn) cartBtn.addEventListener("click", openCartDrawer);
@@ -543,7 +588,7 @@ if (checkoutBtn) {
 }
 
 // ==========================================
-// F. BANNER CAROUSEL
+// G. BANNER CAROUSEL
 // ==========================================
 let slideIndex = 0;
 let slideTimer;
@@ -582,7 +627,7 @@ function currentSlide(index) {
 }
 
 // ==========================================
-// G. MODAL DETAIL PRODUK + SECTION ULASAN PEMBELI
+// H. MODAL DETAIL PRODUK + SECTION ULASAN PEMBELI
 // ==========================================
 function openProductDetail(productId) {
   const id = Number(productId);
@@ -706,11 +751,11 @@ function openProductDetail(productId) {
     });
   });
 
-  detailModal.classList.add("active");
+  showModal(detailModal);
 }
 
 function closeProductDetail() {
-  if (detailModal) detailModal.classList.remove("active");
+  closeModalManual(detailModal);
 }
 
 if (closeDetailBtn) closeDetailBtn.addEventListener("click", closeProductDetail);
@@ -718,95 +763,6 @@ if (detailModal) {
   detailModal.addEventListener("click", (e) => {
     if (e.target === detailModal) closeProductDetail();
   });
-}
-
-// ==========================================
-// H. FITUR BACK BUTTON NAVIGASI (HANDLING MODAL VIA TOMBOL BACK)
-// ==========================================
-
-function pushModalState(modalName) {
-  history.pushState({ modalOpen: true, modalName: modalName }, "");
-}
-
-function closeAllModalsDirectly() {
-  if (detailModal) detailModal.classList.remove("active");
-  if (wishlistModal) wishlistModal.classList.remove("active");
-  if (historyModal) historyModal.classList.remove("active");
-  if (cartDrawer && cartOverlay) {
-    cartDrawer.classList.remove("active");
-    cartOverlay.classList.remove("active");
-  }
-}
-
-// Hooking fungsi buka modal agar mencatat state ke History
-const originalOpenProductDetail = openProductDetail;
-openProductDetail = function(productId) {
-  originalOpenProductDetail(productId);
-  pushModalState("detail");
-};
-
-const originalOpenCartDrawer = openCartDrawer;
-openCartDrawer = function() {
-  originalOpenCartDrawer();
-  pushModalState("cart");
-};
-
-if (wishlistBtn) {
-  wishlistBtn.addEventListener("click", () => {
-    pushModalState("wishlist");
-  });
-}
-
-if (historyBtn) {
-  historyBtn.addEventListener("click", () => {
-    pushModalState("history");
-  });
-}
-
-// Event Listener saat Tombol Back HP / Browser Ditekan (Popstate)
-window.addEventListener("popstate", (e) => {
-  const isAnyModalActive = 
-    (detailModal && detailModal.classList.contains("active")) ||
-    (wishlistModal && wishlistModal.classList.contains("active")) ||
-    (historyModal && historyModal.classList.contains("active")) ||
-    (cartDrawer && cartDrawer.classList.contains("active"));
-
-  if (isAnyModalActive) {
-    closeAllModalsDirectly();
-  }
-});
-
-// Jika pengguna menutup modal lewat tombol X manual, rapikan History State
-function syncCloseWithHistory() {
-  const isAnyModalActive = 
-    (detailModal && detailModal.classList.contains("active")) ||
-    (wishlistModal && wishlistModal.classList.contains("active")) ||
-    (historyModal && historyModal.classList.contains("active")) ||
-    (cartDrawer && cartDrawer.classList.contains("active"));
-
-  if (!isAnyModalActive && window.history.state && window.history.state.modalOpen) {
-    window.history.back();
-  }
-}
-
-const originalCloseProductDetail = closeProductDetail;
-closeProductDetail = function() {
-  originalCloseProductDetail();
-  syncCloseWithHistory();
-};
-
-const originalCloseCartDrawer = closeCartDrawer;
-closeCartDrawer = function() {
-  originalCloseCartDrawer();
-  syncCloseWithHistory();
-};
-
-if (closeWishlistBtn) {
-  closeWishlistBtn.addEventListener("click", syncCloseWithHistory);
-}
-
-if (closeHistoryBtn) {
-  closeHistoryBtn.addEventListener("click", syncCloseWithHistory);
 }
 
 // ==========================================

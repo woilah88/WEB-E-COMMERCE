@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XemaShop</title>
-   <link rel="stylesheet" href="halaman-utama.css?v=4444">
+    <link rel="stylesheet" href="halaman-utama.css?v=2020">
 </head>
 <body>
 
@@ -18,29 +18,25 @@
         </div>
 
         <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <!-- TOMBOL SAKELAR DARK MODE -->
             <button id="dark-mode-toggle" class="cart-icon" title="Ubah Mode Gelap/Terang" style="border: none; outline: none;">
                 🌙
             </button>
 
-            <!-- IKON RIWAYAT PESANAN -->
             <div class="cart-icon" id="history-btn" title="Riwayat Pembelian">
                 📜
             </div>
 
-            <!-- IKON WISHLIST / FAVORIT -->
             <div class="cart-icon" id="wishlist-btn" title="Daftar Favorit">
                 ❤️ <span id="wishlist-count">0</span>
             </div>
 
-            <!-- IKON KERANJANG -->
             <div class="cart-icon" id="cart-btn" title="Keranjang Belanja">
                 🛒 <span id="cart-count">0</span>
             </div>
         </div>
     </header>
 
-    <!-- BANNER PROMO SLIDER (HERO CAROUSEL) -->
+    <!-- BANNER PROMO SLIDER -->
     <section class="carousel-container">
       <div class="carousel-slide fade">
         <div class="banner-content banner-1">
@@ -100,7 +96,7 @@
     <!-- DRAWER KERANJANG BELANJA -->
     <aside class="cart-drawer" id="cart-drawer">
         <div class="cart-header">
-            <h3>Keranjang Belanja</h3>
+            <h3 style="font-size: 1.05rem;">Keranjang Belanja</h3>
             <button class="close-btn" id="close-cart-btn">&times;</button>
         </div>
         
@@ -120,30 +116,33 @@
     <!-- MODAL WISHLIST / FAVORIT -->
     <div class="modal-overlay" id="wishlist-modal">
         <div class="modal-content product-detail-card">
-            <button class="close-btn" id="close-wishlist-btn">&times;</button>
-            <h2 style="margin-bottom: 1rem; color: var(--text-dark);">❤️ Favorit Saya</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="color: var(--text-dark); font-size: 1.2rem; margin: 0;">❤️ Favorit Saya</h2>
+                <button class="close-btn" id="close-wishlist-btn">&times;</button>
+            </div>
             <div id="wishlist-items-container" style="display: flex; flex-direction: column; gap: 1rem; max-height: 60vh; overflow-y: auto;">
             </div>
         </div>
     </div>
 
-    <!-- MODAL RIWAYAT PEMBELIAN & FORM RATING KOMPLIT -->
+    <!-- MODAL RIWAYAT PEMBELIAN -->
     <div class="modal-overlay" id="history-modal">
         <div class="modal-content product-detail-card" style="max-width: 650px;">
-            <button class="close-btn" id="close-history-btn">&times;</button>
-            <h2 style="margin-bottom: 1rem; color: var(--text-dark);">📜 Riwayat Pembelian & Ulasan</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="color: var(--text-dark); font-size: 1.2rem; margin: 0;">📜 Riwayat Pembelian & Ulasan</h2>
+                <button class="close-btn" id="close-history-btn">&times;</button>
+            </div>
             <div id="history-items-container" style="display: flex; flex-direction: column; gap: 1rem; max-height: 65vh; overflow-y: auto;">
             </div>
         </div>
     </div>
 
-    <!-- MODAL DETAIL PRODUK + SECTION ULASAN PEMBELI -->
+    <!-- MODAL DETAIL PRODUK -->
     <div class="modal-overlay" id="product-detail-modal">
-        <div class="modal-content product-detail-card" style="max-width: 700px;">
-            <button class="close-btn" id="close-detail-btn">&times;</button>
+        <div class="modal-content product-detail-card" style="max-width: 700px; position: relative;">
+            <button class="close-btn" id="close-detail-btn" style="position: absolute; top: 15px; right: 20px; z-index: 10;">&times;</button>
             <div class="product-detail-body" id="product-detail-body"></div>
             
-            <!-- SECTION ULASAN SHOPEE-STYLE -->
             <div class="reviews-section" style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
                 <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-dark);">💬 Ulasan Pembeli</h3>
                 <div id="product-reviews-container" style="display: flex; flex-direction: column; gap: 1rem; max-height: 300px; overflow-y: auto;">
@@ -152,7 +151,7 @@
         </div>
     </div>
 
-    <!-- TOMBOL LIVE CHAT WHATSAPP MELAYANG -->
+    <!-- TOMBOL LIVE CHAT WHATSAPP -->
     <a href="https://wa.me/6285124164662?text=Halo%20XemaShop!%20Saya%20mau%20tanya-tanya%20produk%20dong." 
        target="_blank" 
        class="floating-wa-btn" 
@@ -160,7 +159,7 @@
        💬
     </a>
 
-    <script src="produk.js?v=4444"></script>
-    <script src="app.js?v=4444"></script>
+    <script src="produk.js?v=2020"></script>
+    <script src="app.js?v=2020"></script>
 </body>
 </html>

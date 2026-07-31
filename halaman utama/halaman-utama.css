@@ -369,7 +369,7 @@ body.dark-mode textarea {
 .dot.active { background-color: var(--primary-color); width: 20px; border-radius: 10px; }
 
 /* ==========================================
-   DRAWER KERANJANG BELANJA (FLEXIBEL ADAPTIF)
+   DRAWER KERANJANG PAS DI BAWAH NAVBAR KANAN
    ========================================== */
 .cart-overlay {
   position: fixed;
@@ -391,25 +391,26 @@ body.dark-mode textarea {
 
 .cart-drawer {
   position: fixed;
-  top: 50%;
+  top: 70px;
   right: -420px;
-  transform: translateY(-50%);
+  transform: none !important;
   width: 380px;
   max-width: 90vw;
   height: auto !important;
-  max-height: 85vh !important;
+  max-height: 80vh !important;
   background-color: var(--card-bg);
-  box-shadow: -4px 0 20px rgba(0,0,0,0.2);
-  border-radius: 16px 0 0 16px;
+  box-shadow: -4px 8px 25px rgba(0,0,0,0.2);
+  border-radius: 16px 0 16px 16px;
+  border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  transition: right 0.3s ease;
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 201;
   overflow: hidden;
 }
 
 .cart-drawer.active {
-  right: 0 !important;
+  right: 1.5rem !important;
 }
 
 .cart-header {
@@ -836,6 +837,14 @@ body.dark-mode textarea {
   }
 
   .detail-img-wrapper { height: 180px; }
+
+  .cart-drawer {
+    top: 110px !important;
+  }
+
+  .cart-drawer.active {
+    right: 0.5rem !important;
+  }
 }
 
 /* ==========================================

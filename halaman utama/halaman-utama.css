@@ -518,14 +518,14 @@ body.dark-mode textarea {
 }
 
 /* ==========================================
-   MODAL & DETAIL PRODUK
+   MODAL OVERLAY GENERAL
    ========================================== */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -850,14 +850,6 @@ body.dark-mode textarea {
 /* ==========================================
    FIX PERMANEN WISHLIST MOBILE RESPONSIVE
    ========================================== */
-#wishlist-modal .product-detail-card,
-.wishlist-modal-card {
-  width: 92% !important;
-  max-width: 480px !important;
-  padding: 1.2rem 1rem !important;
-  border-radius: 16px !important;
-}
-
 .wishlist-item-card {
   display: flex !important;
   align-items: center !important;
@@ -961,32 +953,49 @@ body.dark-mode textarea {
 }
 
 /* ==========================================
-   STYLING TOMBOL KEMBALI DI HEADER MODAL
+   SAMAKAN MODAL FAVORIT & RIWAYAT SEPERTI KERANJANG (DI KANAN ATAS)
    ========================================== */
-.modal-header-nav {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  margin-bottom: 0.8rem !important;
+#wishlist-modal,
+#history-modal {
+  align-items: flex-start !important;
+  justify-content: flex-end !important;
+  padding-top: 70px !important;
+  padding-right: 1.5rem !important;
 }
 
-.modal-back-btn {
-  background-color: var(--bg-color) !important;
-  color: var(--text-dark) !important;
+#wishlist-modal .product-detail-card,
+#history-modal .product-detail-card {
+  width: 380px !important;
+  max-width: 90vw !important;
+  max-height: 80vh !important;
+  margin: 0 !important;
+  border-radius: 16px 0 16px 16px !important;
+  box-shadow: -4px 8px 25px rgba(0, 0, 0, 0.2) !important;
   border: 1px solid var(--border-color) !important;
-  padding: 0.35rem 0.8rem !important;
-  border-radius: 20px !important;
-  font-size: 0.8rem !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.3rem !important;
-  transition: all 0.2s ease !important;
+  animation: slideDownNav 0.25s ease-out !important;
 }
 
-.modal-back-btn:hover {
-  background-color: var(--primary-color) !important;
-  color: #ffffff !important;
-  border-color: var(--primary-color) !important;
+@keyframes slideDownNav {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 650px) {
+  #wishlist-modal,
+  #history-modal {
+    padding-top: 110px !important;
+    padding-right: 0.5rem !important;
+    padding-left: 0.5rem !important;
+  }
+
+  #wishlist-modal .product-detail-card,
+  #history-modal .product-detail-card {
+    width: 100% !important;
+  }
 }

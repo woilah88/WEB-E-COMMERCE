@@ -57,7 +57,7 @@ function formatRupiah(number) {
 }
 
 // ==========================================
-// A. MEKANISME NAVIGASI BACK HP (URL HASH GUARD)
+// A. MEKANISME NAVIGASI BACK HP & CLICK OUTSIDE TO CLOSE
 // ==========================================
 
 // Fungsi Buka Modal + Tambah Hash `#popup` ke URL
@@ -81,7 +81,7 @@ function hideAllModals() {
   if (cartOverlay) cartOverlay.classList.remove("active");
 }
 
-// Fungsi Tutup Modal lewat Tombol X Manual
+// Fungsi Tutup Modal lewat Tombol X / Klik Area Kosong Manual
 function closeModalManual(modalElement, overlayElement = null) {
   if (!modalElement) return;
   
@@ -95,7 +95,6 @@ function closeModalManual(modalElement, overlayElement = null) {
 
 // DENGARKAN TOMBOL BACK HP (PERUBAHAN HASH/POPSTATE)
 window.addEventListener("hashchange", () => {
-  // Jika hash '#popup' hilang (karena user memencet Back di HP), TUTUP MODAL!
   if (window.location.hash !== "#popup") {
     hideAllModals();
   }
@@ -106,6 +105,35 @@ window.addEventListener("popstate", () => {
     hideAllModals();
   }
 });
+
+// FITUR KLIK AREA KOSONG (OUTSIDE CLICK) UNTUK MENUTUP MODAL
+if (cartOverlay) {
+  cartOverlay.addEventListener("click", () => closeModalManual(cartDrawer, cartOverlay));
+}
+
+if (wishlistModal) {
+  wishlistModal.addEventListener("click", (e) => {
+    if (e.target === wishlistModal) {
+      closeModalManual(wishlistModal);
+    }
+  });
+}
+
+if (historyModal) {
+  historyModal.addEventListener("click", (e) => {
+    if (e.target === historyModal) {
+      closeModalManual(historyModal);
+    }
+  });
+}
+
+if (detailModal) {
+  detailModal.addEventListener("click", (e) => {
+    if (e.target === detailModal) {
+      closeModalManual(detailModal);
+    }
+  });
+}
 
 // ==========================================
 // B. RENDER PRODUK, FILTER, & SORTING
@@ -575,7 +603,6 @@ function closeCartDrawer() {
 
 if (cartBtn) cartBtn.addEventListener("click", openCartDrawer);
 if (closeCartBtn) closeCartBtn.addEventListener("click", closeCartDrawer);
-if (cartOverlay) cartOverlay.addEventListener("click", closeCartDrawer);
 
 if (checkoutBtn) {
   checkoutBtn.addEventListener("click", () => {
@@ -759,11 +786,6 @@ function closeProductDetail() {
 }
 
 if (closeDetailBtn) closeDetailBtn.addEventListener("click", closeProductDetail);
-if (detailModal) {
-  detailModal.addEventListener("click", (e) => {
-    if (e.target === detailModal) closeProductDetail();
-  });
-}
 
 // ==========================================
 // INISIALISASI HALAMAN

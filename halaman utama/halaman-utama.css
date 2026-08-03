@@ -341,30 +341,35 @@ body.dark-mode textarea {
 
 .prev-slide, .next-slide {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 42% !important; /* Diubah ke 42% supaya posisinya agak naik */
+  transform: translateY(-50%) !important;
   background: rgba(255, 255, 255, 0.9);
   color: #1e293b;
   border: none;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   transition: all 0.2s ease;
 }
 
 .prev-slide:hover, .next-slide:hover {
   background: #ffffff;
-  transform: translateY(-50%) scale(1.1);
+  transform: translateY(-50%) scale(1.1) !important;
 }
 
-.prev-slide { left: 1.5rem; }
-.next-slide { right: 1.5rem; }
+.prev-slide { 
+  left: 1.2rem !important; 
+}
+
+.next-slide { 
+  right: 1.2rem !important; 
+}
 
 .carousel-dots { text-align: center; margin-top: 0.5rem; }
 .dot {

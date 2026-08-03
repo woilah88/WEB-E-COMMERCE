@@ -610,7 +610,8 @@ if (checkoutBtn) {
       alert("Keranjang belanja kamu masih kosong!");
       return;
     }
-    window.location.href = "../checkout/checkout.html";
+    // Path relatif langsung ke folder checkout
+    window.location.href = "checkout/checkout.html";
   });
 }
 

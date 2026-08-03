@@ -56,23 +56,29 @@ function formatRupiah(number) {
   }).format(number);
 }
 
+// Helper Normalisasi Path Gambar (Biar Kompatibel dari Root index.html)
+function getCleanImagePath(imgPath) {
+  if (!imgPath) return "";
+  if (imgPath.startsWith("../")) {
+    return imgPath.replace("../", "");
+  }
+  return imgPath;
+}
+
 // ==========================================
 // A. MEKANISME NAVIGASI BACK HP & CLICK OUTSIDE TO CLOSE
 // ==========================================
 
-// Fungsi Buka Modal + Tambah Hash `#popup` ke URL
 function showModal(modalElement, overlayElement = null) {
   if (!modalElement) return;
   modalElement.classList.add("active");
   if (overlayElement) overlayElement.classList.add("active");
 
-  // Jika URL belum ber-hash, tambahkan hash #popup
   if (window.location.hash !== "#popup") {
     window.location.hash = "popup";
   }
 }
 
-// Fungsi Tutup Semua Modal Secara Fisik
 function hideAllModals() {
   if (detailModal) detailModal.classList.remove("active");
   if (wishlistModal) wishlistModal.classList.remove("active");
@@ -81,19 +87,16 @@ function hideAllModals() {
   if (cartOverlay) cartOverlay.classList.remove("active");
 }
 
-// Fungsi Tutup Modal lewat Tombol X / Klik Area Kosong Manual
 function closeModalManual(modalElement, overlayElement = null) {
   if (!modalElement) return;
   
   hideAllModals();
 
-  // Jika masih ada hash #popup di URL, mundurkan history browser
   if (window.location.hash === "#popup") {
     history.back();
   }
 }
 
-// DENGARKAN TOMBOL BACK HP (PERUBAHAN HASH/POPSTATE)
 window.addEventListener("hashchange", () => {
   if (window.location.hash !== "#popup") {
     hideAllModals();
@@ -106,7 +109,6 @@ window.addEventListener("popstate", () => {
   }
 });
 
-// FITUR KLIK AREA KOSONG (OUTSIDE CLICK) UNTUK MENUTUP MODAL
 if (cartOverlay) {
   cartOverlay.addEventListener("click", () => closeModalManual(cartDrawer, cartOverlay));
 }
@@ -189,6 +191,8 @@ function renderProducts() {
     const count = productStats.reviewsCount;
     const avgRating = count > 0 ? (productStats.totalStars / count).toFixed(1) : '0.0';
 
+    const cleanImg = getCleanImagePath(product.image);
+
     productCard.innerHTML = `
       <div class="product-image-wrapper">
         ${hasDiscount ? `<span class="discount-badge">-${product.discountPercent}%</span>` : ''}
@@ -197,7 +201,7 @@ function renderProducts() {
           ${isWishlisted ? '❤️' : '🤍'}
         </button>
 
-        <img src="${product.image}" alt="${product.name}" class="product-image" onclick="openProductDetail(${product.id})" style="cursor: pointer;">
+        <img src="${cleanImg}" alt="${product.name}" class="product-image" onclick="openProductDetail(${product.id})" style="cursor: pointer;">
       </div>
       <div class="product-info">
         <span class="product-category">${product.category}</span>
@@ -282,10 +286,12 @@ function updateWishlistUI() {
     const product = products.find(p => Number(p.id) === Number(id));
     if (!product) return;
 
+    const cleanImg = getCleanImagePath(product.image);
+
     const itemDiv = document.createElement("div");
     itemDiv.classList.add("wishlist-item-card");
     itemDiv.innerHTML = `
-      <img src="${product.image}" alt="${product.name}" class="wishlist-item-img">
+      <img src="${cleanImg}" alt="${product.name}" class="wishlist-item-img">
       <div class="wishlist-item-info">
         <h4>${product.name}</h4>
         <p>${formatRupiah(product.price)}</p>
@@ -339,10 +345,12 @@ function renderHistory() {
         starsHTML += `<span class="${isActive}" onclick="setTempStar(${orderIndex}, ${itemIndex}, ${i})">⭐</span>`;
       }
 
+      const cleanImg = getCleanImagePath(item.image);
+
       productsHTML += `
         <div class="history-product-item">
           <div class="history-product-main">
-            <img src="${item.image}" alt="${item.name}" class="history-product-img">
+            <img src="${cleanImg}" alt="${item.name}" class="history-product-img">
             <div style="flex-grow: 1;">
               <h4 style="font-size: 0.9rem; color: var(--text-dark); margin-bottom: 0.2rem;">${item.name} (${item.quantity}x)</h4>
               <p style="font-size: 0.8rem; color: var(--primary-color); font-weight: bold; margin-bottom: 0.4rem;">${formatRupiah(item.price)}</p>
@@ -548,10 +556,12 @@ function renderCart() {
       totalItemCount += item.quantity;
       totalPrice += item.price * item.quantity;
 
+      const cleanImg = getCleanImagePath(item.image);
+
       const itemDiv = document.createElement("div");
       itemDiv.classList.add("cart-item");
       itemDiv.innerHTML = `
-        <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+        <img src="${cleanImg}" alt="${item.name}" class="cart-item-img">
         <div class="cart-item-info">
           <div class="cart-item-title">${item.name}</div>
           <div class="cart-item-price">${formatRupiah(item.price)}</div>
@@ -610,7 +620,6 @@ if (checkoutBtn) {
       alert("Keranjang belanja kamu masih kosong!");
       return;
     }
-    // Path relatif langsung ke folder checkout
     window.location.href = "checkout/checkout.html";
   });
 }
@@ -705,11 +714,12 @@ function openProductDetail(productId) {
   });
 
   const avgRating = count > 0 ? (totalStars / count).toFixed(1) : '0.0';
+  const cleanImg = getCleanImagePath(product.image);
 
   detailBody.innerHTML = `
     <div class="detail-img-wrapper">
       ${hasDiscount ? `<span class="discount-badge">-${product.discountPercent}%</span>` : ''}
-      <img src="${product.image}" alt="${product.name}" class="detail-img">
+      <img src="${cleanImg}" alt="${product.name}" class="detail-img">
     </div>
     <div class="detail-info">
       <span class="product-category">${product.category}</span>

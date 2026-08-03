@@ -339,36 +339,40 @@ body.dark-mode textarea {
 .banner-2 { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
 .banner-3 { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); }
 
-.prev-slide, .next-slide {
-  position: absolute;
-  top: 42% !important; /* Diubah ke 42% supaya posisinya agak naik */
+.prev-slide, .next-slide,
+.prev-btn, .next-btn,
+.prev, .next {
+  position: absolute !important;
+  top: 42% !important; /* Menaikkan posisi tombol agar pas di tengah */
   transform: translateY(-50%) !important;
-  background: rgba(255, 255, 255, 0.9);
-  color: #1e293b;
-  border: none;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #1e293b !important;
+  border: none !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  z-index: 10 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.2s ease !important;
 }
 
-.prev-slide:hover, .next-slide:hover {
-  background: #ffffff;
+.prev-slide:hover, .next-slide:hover,
+.prev-btn:hover, .next-btn:hover,
+.prev:hover, .next:hover {
+  background: #ffffff !important;
   transform: translateY(-50%) scale(1.1) !important;
 }
 
-.prev-slide { 
-  left: 1.2rem !important; 
+.prev-slide, .prev-btn, .prev {
+  left: 1.2rem !important;
 }
 
-.next-slide { 
-  right: 1.2rem !important; 
+.next-slide, .next-btn, .next {
+  right: 1.2rem !important;
 }
 
 .carousel-dots { text-align: center; margin-top: 0.5rem; }

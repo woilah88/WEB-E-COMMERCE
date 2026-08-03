@@ -386,9 +386,6 @@ body.dark-mode textarea {
 }
 .dot.active { background-color: var(--primary-color); width: 20px; border-radius: 10px; }
 
-/* ==========================================
-   DRAWER KERANJANG PAS DI BAWAH NAVBAR KANAN
-   ========================================== */
 .cart-overlay {
   position: fixed;
   top: 0;
@@ -535,9 +532,7 @@ body.dark-mode textarea {
   cursor: pointer;
 }
 
-/* ==========================================
-   MODAL OVERLAY GENERAL
-   ========================================== */
+
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;

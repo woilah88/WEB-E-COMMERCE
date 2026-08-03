@@ -163,6 +163,11 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     });
 
+    // DATA TOKO SEBAGAI PENGIRIM
+    const senderName = "XemaShop Store";
+    const senderPhone = "085124164662";
+    const senderCity = "Pasuruan, Jawa Timur";
+
     invoiceContent.innerHTML = `
       <div style="text-align: center; margin-bottom: 1rem;">
         <h3 style="color: var(--text-dark);">Transaksi Berhasil!</h3>
@@ -173,17 +178,34 @@ document.addEventListener("DOMContentLoaded", () => {
         <div style="margin-bottom: 0.4rem;"><strong>ID Pesanan:</strong> <span style="color: var(--primary-color); font-weight: bold;">${order.orderId}</span></div>
         <div style="margin-bottom: 0.4rem;"><strong>Metode Bayar:</strong> ${order.paymentMethod}</div>
         <div style="margin-bottom: 0.4rem;"><strong>Pengiriman:</strong> ${order.shippingOption}</div>
+        
         <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 0.6rem 0;">
         
-        <div style="margin-bottom: 0.4rem;">
-          <strong>PENERIMA PAKET:</strong><br>
-          ${order.customerName} (${order.customerPhone})<br>
-          ${order.address}
+        <!-- SIDE BY SIDE: PENGIRIM (KIRI) & PENERIMA (KANAN) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; text-align: left; background: var(--card-bg); padding: 0.6rem; border-radius: 6px; border: 1px solid var(--border-color);">
+          
+          <!-- KOLOM PENGIRIM (KIRI) -->
+          <div style="border-right: 1px dashed var(--border-color); padding-right: 0.5rem;">
+            <strong style="color: var(--primary-color); font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 0.2rem;">📤 PENGIRIM:</strong>
+            <strong style="display: block; font-size: 0.85rem; color: var(--text-dark);">${senderName}</strong>
+            <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">${senderPhone}</span>
+            <span style="color: var(--text-dark); font-size: 0.75rem; margin-top: 0.2rem; display: block;">${senderCity}</span>
+          </div>
+
+          <!-- KOLOM PENERIMA (KANAN) -->
+          <div style="padding-left: 0.2rem;">
+            <strong style="color: var(--accent-green); font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 0.2rem;">📥 PENERIMA:</strong>
+            <strong style="display: block; font-size: 0.85rem; color: var(--text-dark);">${order.customerName}</strong>
+            <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">${order.customerPhone}</span>
+            <span style="color: var(--text-dark); font-size: 0.75rem; margin-top: 0.2rem; display: block;">${order.address}</span>
+          </div>
+
         </div>
+
         <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 0.6rem 0;">
         
         <div>
-          <strong>RINCIAN ITEM:</strong><br>
+          <strong>🛒 RINCIAN ITEM:</strong><br>
           ${itemsHTML}
         </div>
         <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 0.6rem 0;">
@@ -198,9 +220,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const sellerPhone = "6285124164662";
     let textWA = `Halo XemaShop! Saya mau konfirmasi pesanan baru:\n\n` +
                  `• *ID Pesanan:* ${order.orderId}\n` +
-                 `• *Nama:* ${order.customerName}\n` +
-                 `• *No WA:* ${order.customerPhone}\n` +
-                 `• *Alamat:* ${order.address}\n\n` +
+                 `• *Pengirim:* ${senderName} (${senderPhone})\n` +
+                 `• *Penerima:* ${order.customerName} (${order.customerPhone})\n` +
+                 `• *Alamat Penerima:* ${order.address}\n\n` +
                  `• *Pesanan:*\n`;
 
     order.items.forEach(i => {

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XemaShop</title>
-    <!-- Path CSS mengarah ke subfolder halaman utama -->
     <link rel="stylesheet" href="halaman utama/halaman-utama.css?v=9999">
 </head>
 <body>
@@ -19,29 +18,24 @@
         </div>
 
         <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <!-- TOMBOL SAKELAR DARK MODE -->
             <button id="dark-mode-toggle" class="cart-icon" title="Ubah Mode Gelap/Terang" style="border: none; outline: none;">
                 🌙
             </button>
 
-            <!-- IKON RIWAYAT PESANAN -->
             <div class="cart-icon" id="history-btn" title="Riwayat Pembelian">
                 📜
             </div>
 
-            <!-- IKON WISHLIST / FAVORIT -->
             <div class="cart-icon" id="wishlist-btn" title="Daftar Favorit">
                 ❤️ <span id="wishlist-count">0</span>
             </div>
 
-            <!-- IKON KERANJANG -->
             <div class="cart-icon" id="cart-btn" title="Keranjang Belanja">
                 🛒 <span id="cart-count">0</span>
             </div>
         </div>
     </header>
 
-    <!-- BANNER PROMO SLIDER (HERO CAROUSEL) -->
     <section class="carousel-container">
       <div class="carousel-slide fade">
         <div class="banner-content banner-1">
@@ -95,10 +89,8 @@
         <div class="product-grid" id="product-container"></div>
     </main>
 
-    <!-- OVERLAY CART -->
     <div class="cart-overlay" id="cart-overlay"></div>
 
-    <!-- DRAWER KERANJANG BELANJA -->
     <aside class="cart-drawer" id="cart-drawer">
         <div class="cart-header">
             <h3 style="font-size: 1.05rem;">Keranjang Belanja</h3>
@@ -118,7 +110,6 @@
         </div>
     </aside>
 
-    <!-- MODAL WISHLIST / FAVORIT -->
     <div class="modal-overlay" id="wishlist-modal">
         <div class="modal-content product-detail-card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -130,7 +121,6 @@
         </div>
     </div>
 
-    <!-- MODAL RIWAYAT PEMBELIAN -->
     <div class="modal-overlay" id="history-modal">
         <div class="modal-content product-detail-card" style="max-width: 650px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -142,7 +132,6 @@
         </div>
     </div>
 
-    <!-- MODAL DETAIL PRODUK -->
     <div class="modal-overlay" id="product-detail-modal">
         <div class="modal-content product-detail-card" style="max-width: 700px; position: relative;">
             <button class="close-btn" id="close-detail-btn" style="position: absolute; top: 15px; right: 20px; z-index: 10;">&times;</button>
@@ -156,7 +145,6 @@
         </div>
     </div>
 
-    <!-- TOMBOL LIVE CHAT WHATSAPP MELAYANG -->
     <a href="https://wa.me/6285124164662?text=Halo%20XemaShop!%20Saya%20mau%20tanya-tanya%20produk%20dong." 
        target="_blank" 
        class="floating-wa-btn" 
@@ -164,7 +152,6 @@
        💬
     </a>
 
-    <!-- Path JS mengarah ke subfolder halaman utama -->
     <script src="halaman utama/produk.js?v=9999"></script>
     <script src="halaman utama/app.js?v=9999"></script>
 </body>

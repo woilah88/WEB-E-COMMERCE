@@ -176,14 +176,14 @@ document.addEventListener("DOMContentLoaded", () => {
         <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 0.6rem 0;">
         
         <div style="margin-bottom: 0.4rem;">
-          <strong>📦 PENERIMA PAKET:</strong><br>
+          <strong>PENERIMA PAKET:</strong><br>
           ${order.customerName} (${order.customerPhone})<br>
           ${order.address}
         </div>
         <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 0.6rem 0;">
         
         <div>
-          <strong>🛒 RINCIAN ITEM:</strong><br>
+          <strong>RINCIAN ITEM:</strong><br>
           ${itemsHTML}
         </div>
         <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 0.6rem 0;">
@@ -197,18 +197,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const sellerPhone = "6285124164662";
     let textWA = `Halo XemaShop! Saya mau konfirmasi pesanan baru:\n\n` +
-                 `📌 *ID Pesanan:* ${order.orderId}\n` +
-                 `👤 *Nama:* ${order.customerName}\n` +
-                 `📱 *No WA:* ${order.customerPhone}\n` +
-                 `📍 *Alamat:* ${order.address}\n\n` +
-                 `🛒 *Pesanan:*\n`;
+                 `• *ID Pesanan:* ${order.orderId}\n` +
+                 `• *Nama:* ${order.customerName}\n` +
+                 `• *No WA:* ${order.customerPhone}\n` +
+                 `• *Alamat:* ${order.address}\n\n` +
+                 `• *Pesanan:*\n`;
 
     order.items.forEach(i => {
-      textWA += `- ${i.name} (${i.quantity}x)\n`;
+      textWA += `  · ${i.name} (${i.quantity}x)\n`;
     });
 
-    textWA += `\n💰 *Total Bayar:* ${formatRupiah(order.totalAmount)}\n` +
-              `💳 *Metode:* ${order.paymentMethod}\n\n` +
+    textWA += `\n• *Total Bayar:* ${formatRupiah(order.totalAmount)}\n` +
+              `• *Metode:* ${order.paymentMethod}\n\n` +
               `Mohon diproses ya, terima kasih!`;
 
     if (confirmWaBtn) {

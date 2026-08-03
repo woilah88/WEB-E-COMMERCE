@@ -5,6 +5,24 @@
 let cart = JSON.parse(localStorage.getItem("CART_XEMASHOP")) || [];
 let wishlist = JSON.parse(localStorage.getItem("WISHLIST_XEMASHOP")) || [];
 
+// Helper Normalisasi Path Gambar (Biar Kompatibel dari Root index.html)
+function getCleanImagePath(imgPath) {
+  if (!imgPath) return "";
+  if (imgPath.startsWith("../")) {
+    return imgPath.replace("../", "");
+  }
+  return imgPath;
+}
+
+// Bersihkan data cart lama di localStorage jika masih menyimpan path "../"
+cart = cart.map(item => {
+  if (item.image) {
+    item.image = getCleanImagePath(item.image);
+  }
+  return item;
+});
+localStorage.setItem("CART_XEMASHOP", JSON.stringify(cart));
+
 // Element DOM Produk & Sorting
 const productContainer = document.getElementById("product-container");
 const searchInput = document.getElementById("search-input");
@@ -54,15 +72,6 @@ function formatRupiah(number) {
     currency: "IDR",
     minimumFractionDigits: 0
   }).format(number);
-}
-
-// Helper Normalisasi Path Gambar (Biar Kompatibel dari Root index.html)
-function getCleanImagePath(imgPath) {
-  if (!imgPath) return "";
-  if (imgPath.startsWith("../")) {
-    return imgPath.replace("../", "");
-  }
-  return imgPath;
 }
 
 // ==========================================
@@ -144,6 +153,11 @@ if (detailModal) {
 function renderProducts() {
   if (!productContainer) return;
   productContainer.innerHTML = "";
+
+  if (typeof products === "undefined" || !Array.isArray(products)) {
+    productContainer.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); margin: 2rem 0;">Gagal memuat produk.</p>`;
+    return;
+  }
 
   let filteredProducts = products.filter((product) => {
     const matchCategory = currentCategory === "all" || product.category.toUpperCase() === currentCategory.toUpperCase();
@@ -515,6 +529,8 @@ if (darkModeToggle) {
 // ==========================================
 
 function addToCart(productId) {
+  if (typeof products === "undefined" || !Array.isArray(products)) return;
+
   const id = Number(productId);
   const product = products.find((p) => Number(p.id) === id);
   if (!product) return;
@@ -528,7 +544,7 @@ function addToCart(productId) {
       id: Number(product.id),
       name: product.name,
       price: product.price,
-      image: product.image,
+      image: getCleanImagePath(product.image), // AMAN DARI PATH ../
       quantity: 1
     });
   }
@@ -667,6 +683,8 @@ function currentSlide(index) {
 // H. MODAL DETAIL PRODUK + SECTION ULASAN PEMBELI
 // ==========================================
 function openProductDetail(productId) {
+  if (typeof products === "undefined" || !Array.isArray(products)) return;
+
   const id = Number(productId);
   const product = products.find((p) => Number(p.id) === id);
   if (!product || !detailModal || !detailBody) return;

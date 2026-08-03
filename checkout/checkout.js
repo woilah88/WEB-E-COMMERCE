@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       checkoutItemsContainer.innerHTML = `
         <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 1rem 0;">
           Keranjang kamu masih kosong.<br>
-          <a href="../halaman utama/halaman utama.html" style="color: var(--primary-color); font-weight: bold; margin-top: 0.5rem; display: inline-block;">
+          <a href="../index.html" style="color: var(--primary-color); font-weight: bold; margin-top: 0.5rem; display: inline-block;">
             Kembali Belanja
           </a>
         </p>
@@ -128,17 +128,23 @@ document.addEventListener("DOMContentLoaded", () => {
         subtotal: subtotal,
         shippingCost: shippingCost,
         totalAmount: totalAmount,
-        items: cart.map(item => ({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-          image: item.image,
-          userRating: 0,
-          userComment: "",
-          userPhoto: null,
-          userVideo: null
-        }))
+        items: cart.map(item => {
+          let cleanImg = item.image || "";
+          if (cleanImg.startsWith("../")) {
+            cleanImg = cleanImg.replace("../", "");
+          }
+          return {
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: cleanImg,
+            userRating: 0,
+            userComment: "",
+            userPhoto: null,
+            userVideo: null
+          };
+        })
       };
 
       let history = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
@@ -163,7 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     });
 
-    // DATA TOKO SEBAGAI PENGIRIM
     const senderName = "XemaShop Store";
     const senderPhone = "085124164662";
     const senderCity = "Pasuruan, Jawa Timur";
@@ -181,10 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 0.6rem 0;">
         
-        <!-- SIDE BY SIDE: PENGIRIM (KIRI) & PENERIMA (KANAN) -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; text-align: left; background: var(--card-bg); padding: 0.6rem; border-radius: 6px; border: 1px solid var(--border-color);">
-          
-          <!-- KOLOM PENGIRIM (KIRI) -->
           <div style="border-right: 1px dashed var(--border-color); padding-right: 0.5rem;">
             <strong style="color: var(--primary-color); font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 0.2rem;">📤 PENGIRIM:</strong>
             <strong style="display: block; font-size: 0.85rem; color: var(--text-dark);">${senderName}</strong>
@@ -192,14 +194,12 @@ document.addEventListener("DOMContentLoaded", () => {
             <span style="color: var(--text-dark); font-size: 0.75rem; margin-top: 0.2rem; display: block;">${senderCity}</span>
           </div>
 
-          <!-- KOLOM PENERIMA (KANAN) -->
           <div style="padding-left: 0.2rem;">
             <strong style="color: var(--accent-green); font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 0.2rem;">📥 PENERIMA:</strong>
             <strong style="display: block; font-size: 0.85rem; color: var(--text-dark);">${order.customerName}</strong>
             <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">${order.customerPhone}</span>
             <span style="color: var(--text-dark); font-size: 0.75rem; margin-top: 0.2rem; display: block;">${order.address}</span>
           </div>
-
         </div>
 
         <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 0.6rem 0;">
@@ -241,7 +241,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (backToHomeBtn) {
       backToHomeBtn.onclick = () => {
-        window.location.href = "../halaman utama/halaman utama.html";
+        // Mengarahkan kembali ke halaman utama root index.html
+        window.location.href = "../index.html";
       };
     }
 

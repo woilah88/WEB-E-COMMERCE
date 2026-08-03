@@ -1,6 +1,6 @@
 /* ======================================================
    STYLESHEET CHECKOUT (HYBRID MOBILE & DARK MODE)
-   ====================================================== */
+   ========================================= */
 
 * {
   margin: 0;
@@ -109,6 +109,45 @@ body {
   font-size: 0.95rem;
 }
 
+/* ======================================================
+   MODAL POP-UP INVOICE / NOTA (PERBAIKAN BUG)
+   ====================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.product-detail-card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+}
+
 /* RESPONSIVE LAYAR SEMPIT / HP (< 768px) */
 @media screen and (max-width: 768px) {
   .container {
@@ -117,7 +156,7 @@ body {
   }
 
   .checkout-grid {
-    grid-template-columns: 1fr !important; /* Wajib 1 kolom tunggal di HP */
+    grid-template-columns: 1fr !important;
     gap: 1rem !important;
   }
 

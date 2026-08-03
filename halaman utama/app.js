@@ -5,23 +5,25 @@
 let cart = JSON.parse(localStorage.getItem("CART_XEMASHOP")) || [];
 let wishlist = JSON.parse(localStorage.getItem("WISHLIST_XEMASHOP")) || [];
 
-// Helper Normalisasi Path Gambar (Biar Kompatibel dari Root index.html)
+// Helper Normalisasi Path Gambar Presisi ke Folder image/
 function getCleanImagePath(imgPath) {
   if (!imgPath) return "";
-  if (imgPath.startsWith("../")) {
-    return imgPath.replace("../", "");
-  }
-  return imgPath;
-}
+  
+  // Ambil murni nama filenya saja (misal: "sepatu.jpg" atau "jam tangan.webp")
+  const fileName = imgPath.split("/").pop();
 
-// Bersihkan data cart lama di localStorage jika masih menyimpan path "../"
-cart = cart.map(item => {
-  if (item.image) {
-    item.image = getCleanImagePath(item.image);
+  // Deteksi lokasi halaman
+  const isInsideSubfolder = window.location.pathname.includes("halaman%20utama") || 
+                            window.location.pathname.includes("halaman utama") ||
+                            window.location.pathname.includes("halaman_utama");
+
+  // Jika dibuka dari subfolder halaman utama/, naik 1 level ke folder image/
+  if (isInsideSubfolder) {
+    return "../image/" + fileName;
+  } else {
+    return "image/" + fileName;
   }
-  return item;
-});
-localStorage.setItem("CART_XEMASHOP", JSON.stringify(cart));
+}
 
 // Element DOM Produk & Sorting
 const productContainer = document.getElementById("product-container");
@@ -65,7 +67,6 @@ let currentCategory = "all";
 let currentSearchQuery = "";
 let currentSortOption = "default";
 
-// Helper Format Rupiah
 function formatRupiah(number) {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -177,6 +178,7 @@ function renderProducts() {
     return;
   }
 
+  // MENGHITUNG RATING BINTANG & ULASAN SECARA DINAMIS
   const orderHistory = JSON.parse(localStorage.getItem("ORDER_HISTORY_XEMA")) || [];
   const ratingsMap = {};
 
@@ -312,7 +314,7 @@ function updateWishlistUI() {
       </div>
       <div class="wishlist-item-actions">
         <button class="add-to-cart-btn" onclick="addToCart(${product.id})">+ Keranjang</button>
-        <button class="remove-wishlist-btn" onclick="toggleWishlist(null, ${product.id})" title="Hapus dari Favorit">🗑️</button>
+        <button class="remove-wishlist-btn" onclick="toggleWishlist(event, ${product.id})" title="Hapus dari Favorit">🗑️</button>
       </div>
     `;
     wishlistItemsContainer.appendChild(itemDiv);
@@ -544,7 +546,7 @@ function addToCart(productId) {
       id: Number(product.id),
       name: product.name,
       price: product.price,
-      image: getCleanImagePath(product.image), // AMAN DARI PATH ../
+      image: product.image,
       quantity: 1
     });
   }
@@ -636,7 +638,16 @@ if (checkoutBtn) {
       alert("Keranjang belanja kamu masih kosong!");
       return;
     }
-    window.location.href = "checkout/checkout.html";
+
+    const isInsideSubfolder = window.location.pathname.includes("halaman%20utama") || 
+                              window.location.pathname.includes("halaman utama") ||
+                              window.location.pathname.includes("halaman_utama");
+
+    if (isInsideSubfolder) {
+      window.location.href = "../checkout/checkout.html";
+    } else {
+      window.location.href = "checkout/checkout.html";
+    }
   });
 }
 
